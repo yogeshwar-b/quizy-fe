@@ -20,7 +20,6 @@ function Home() {
         <button
           onClick={() => {
             navigate('/host')
-            console.log('this is host')
           }}
         >
           Host
@@ -29,7 +28,6 @@ function Home() {
         <button
           onClick={() => {
             navigate('/player')
-            console.log('this is host')
           }}
         >
           Player
