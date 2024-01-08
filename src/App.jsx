@@ -5,11 +5,23 @@ import HostPage from './pages/Host'
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/host' element={<HostPage />} />
-      <Route path='/player' element={<PlayerPage />} />
-    </Routes>
+    <div>
+      <div style={{ display: 'flex', gap: '2em', minWidth: '30em' }}>
+        <div> QUIZY </div>
+        <label
+          htmlFor='DarkModeCheckBox'
+          style={{ marginLeft: 'auto', marginRight: 0 }}
+        >
+          Dark Mode
+          <input type='checkbox' name='DarkMode' id='DarkModeCheckBox' />
+        </label>
+      </div>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/host/*' element={<HostPage />} />
+        <Route path='/player' element={<PlayerPage />} />
+      </Routes>
+    </div>
   )
 }
 

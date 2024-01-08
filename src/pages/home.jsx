@@ -12,7 +12,7 @@ function Home() {
           display: 'flex',
           flexDirection: 'column',
           height: '5em',
-          width: '10em',
+          // width: '10em',
           justifyContent: 'center',
           gap: '3em',
         }}
