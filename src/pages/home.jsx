@@ -1,23 +1,15 @@
 import { useNavigate } from 'react-router-dom'
+import '../styles/home.css'
+import '../styles/component.css'
 
 function Home() {
   const navigate = useNavigate()
 
   return (
     <div>
-      {/* temporarily writing the css inline, need to move this to a css file or use tailwind */}
-      <div
-        style={{
-          padding: '3em',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '5em',
-          // width: '10em',
-          justifyContent: 'center',
-          gap: '3em',
-        }}
-      >
+      <div className='flex-row'>
         <button
+          className='btn-round dark-btn-round'
           onClick={() => {
             navigate('/host')
           }}
@@ -26,6 +18,7 @@ function Home() {
         </button>
 
         <button
+          className='btn-round dark-btn-round'
           onClick={() => {
             navigate('/player')
           }}

@@ -1,0 +1,8 @@
+html {
+  font-family: system-ui;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}

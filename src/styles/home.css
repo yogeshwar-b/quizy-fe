@@ -1,0 +1,9 @@
+.flex-row {
+  padding: 3em;
+  display: flex;
+  flex-direction: column;
+  height: 5em;
+  width: 10em;
+  justify-content: center;
+  gap: 3em;
+}
