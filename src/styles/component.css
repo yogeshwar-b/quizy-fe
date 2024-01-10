@@ -1,0 +1,9 @@
+.btn-round {
+  border-radius: 0.5rem;
+  box-shadow: 0.05rem 0.05rem 0.05rem;
+}
+
+:is(.dark .dark-btn-round) {
+  color: rgb(211, 211, 211);
+  background-color: rgb(109, 109, 109);
+}

@@ -1,0 +1,5 @@
+.nav-row {
+  display: flex;
+  gap: 2em;
+  min-width: 30em;
+}

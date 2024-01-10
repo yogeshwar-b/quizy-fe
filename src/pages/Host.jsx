@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { AddQuestion } from './AddQuestion'
 import ViewQuestions from './ViewQuestions'
+import '../styles/component.css'
+import '../styles/host.css'
 
 function HostPage() {
   return (
@@ -20,15 +22,9 @@ function Welcome() {
 
   return (
     <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '6em',
-          gap: '2em',
-        }}
-      >
+      <div className='flex-column'>
         <button
+          className='btn-round dark-btn-round'
           onClick={() => {
             navigate('./addquestion')
           }}
@@ -36,6 +32,7 @@ function Welcome() {
           Add Question
         </button>
         <button
+          className='btn-round dark-btn-round'
           onClick={() => {
             navigate('./viewquestions')
           }}
