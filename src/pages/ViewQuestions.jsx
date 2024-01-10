@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { backendurl } from '../../config'
+import { PropTypes } from 'prop-types'
 
 function ViewQuestions() {
   const [questiondata, changeQuestionData] = useState([''])
@@ -19,16 +20,41 @@ function ViewQuestions() {
   return _isLoading ? (
     <div>LOADING...</div>
   ) : (
-    <div>
+    <div className='flex-column'>
       {questiondata.map((q) => {
-        return (
-          <div key={q.questionid + q.sessionid}>
-            {'question:' + q.questiontxt + ' id:' + q.questionid}
-          </div>
-        )
+        return <QuestionCard key={q.questionid + q.sessionid} ques={q} />
       })}
     </div>
   )
+}
+/**
+ * @param {object} props
+ * @param {object} props.ques
+ * @param {string} props.ques.questionid  questionid
+ * @param {string} props.ques.questiontxt questiontext
+ * @param {string[]} props.ques.choices choices
+ * @returns
+ */
+function QuestionCard(props) {
+  let ques = props.ques
+  return (
+    <div className='rounded-card'>
+      <div>{ques.questiontxt}</div>
+      <div>
+        {ques.choices.map((choice) => {
+          return <div key={choice}>{choice}</div>
+        })}
+      </div>
+    </div>
+  )
+}
+
+QuestionCard.propTypes = {
+  ques: PropTypes.shape({
+    questionid: PropTypes.string,
+    questiontxt: PropTypes.string,
+    choices: PropTypes.arrayOf(PropTypes.string),
+  }),
 }
 
 export default ViewQuestions

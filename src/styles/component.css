@@ -7,3 +7,13 @@
   color: rgb(211, 211, 211);
   background-color: rgb(109, 109, 109);
 }
+
+.rounded-card {
+  height: auto;
+  width: 20rem;
+  border-color: aqua;
+  border-width: 0.1rem;
+  border-style: solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
