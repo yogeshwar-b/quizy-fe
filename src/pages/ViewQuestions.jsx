@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { backendurl } from '../../config'
 import { PropTypes } from 'prop-types'
+import '../styles/viewquestions.css'
 
 function ViewQuestions() {
   const [questiondata, changeQuestionData] = useState([''])
@@ -20,7 +21,7 @@ function ViewQuestions() {
   return _isLoading ? (
     <div>LOADING...</div>
   ) : (
-    <div className='flex-column'>
+    <div className='questions-flex'>
       {questiondata.map((q) => {
         return <QuestionCard key={q.questionid + q.sessionid} ques={q} />
       })}
@@ -44,6 +45,10 @@ function QuestionCard(props) {
         {ques.choices.map((choice) => {
           return <div key={choice}>{choice}</div>
         })}
+      </div>
+      <div className='flex-reverse'>
+        <button className='btn-round'>Delete</button>
+        <button className='btn-round'>Edit</button>
       </div>
     </div>
   )
