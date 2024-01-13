@@ -53,9 +53,7 @@ export function AddQuestion() {
     const { name, value } = event.target
     changeFormData({ ...FormData, [name]: value })
   }
-  useEffect(() => {
-    console.log('form loaded')
-  })
+
   return (
     <form
       style={{

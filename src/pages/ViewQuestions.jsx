@@ -12,25 +12,32 @@ function ViewQuestions() {
   function HandleOnLoad(data) {
     dispatch({
       type: 'initialize',
-      data: data
+      data: data,
     })
   }
 
   function HandleOndelete() {
     dispatch({
-      type: 'delete'
+      type: 'delete',
     })
   }
 
-  function HandleOnEdit() {
+  function HandleOnChoicesEdit(data) {
     dispatch({
-      type: 'edit'
+      type: 'choices edit',
+      data: data,
+    })
+  }
+  function HandleOnQuestionEdit(data) {
+    dispatch({
+      type: 'questionedit',
+      data: data,
     })
   }
 
   useEffect(() => {
     fetch(`${backendurl}/quizhost/viewquestions`, {
-      method: 'get'
+      method: 'get',
     })
       .then((response) => response.json())
       .then((data) => {
@@ -47,8 +54,9 @@ function ViewQuestions() {
           <QuestionCard
             key={q.questionid + q.sessionid}
             ques={q}
-            handleEdit={HandleOnEdit}
+            handleChoicesEdit={HandleOnChoicesEdit}
             handleDelete={HandleOndelete}
+            handleQuestionEdit={HandleOnQuestionEdit}
           />
         )
       })}
@@ -65,22 +73,75 @@ function ViewQuestions() {
  */
 function QuestionCard(props) {
   let ques = props.ques
+  const [isEditing, changeIsEditing] = useState(false)
   return (
     <div className='rounded-card'>
-      <div>{ques.questiontxt}</div>
-      <div>
-        {ques.choices.map((choice) => {
-          return <div key={choice}>{choice}</div>
-        })}
-      </div>
-      <div className='flex-reverse'>
-        <button className='btn-round' onClick={() => props.handleDelete()}>
-          Delete
-        </button>
-        <button className='btn-round' onClick={() => props.handleEdit()}>
-          Edit
-        </button>
-      </div>
+      {isEditing ? (
+        //Editing Component
+        <>
+          {/* <div>this is{ques.questiontxt}</div> */}
+          <input
+            type='text'
+            value={ques.questiontxt}
+            onChange={(e) => {
+              props.handleQuestionEdit({ ...ques, questiontxt: e.target.value })
+            }}
+          />
+          <textarea
+            type='text'
+            name='Choices'
+            id='choicesinput'
+            value={ques.choices.join('\n')}
+            rows={ques.choices.length}
+            onChange={(e) => {
+              props.handleChoicesEdit({
+                ...ques,
+                choices: e.target.value.split('\n'),
+              })
+            }}
+          ></textarea>
+          <div className='flex-reverse'>
+            <button
+              className='btn-round'
+              disabled
+              onClick={() => props.handleDelete()}
+            >
+              Delete
+            </button>
+            <button
+              className='btn-round'
+              onClick={() => {
+                changeIsEditing(false)
+                // props.handleEdit()
+              }}
+            >
+              save
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>{ques.questiontxt}</div>
+          <div>
+            {ques.choices.map((choice) => {
+              return <div key={choice}>{choice}</div>
+            })}
+          </div>
+          <div className='flex-reverse'>
+            <button className='btn-round' onClick={() => props.handleDelete()}>
+              Delete
+            </button>
+            <button
+              className='btn-round'
+              onClick={() => {
+                changeIsEditing(true)
+              }}
+            >
+              Edit
+            </button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -89,10 +150,10 @@ QuestionCard.propTypes = {
   ques: PropTypes.shape({
     questionid: PropTypes.string,
     questiontxt: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.string)
+    choices: PropTypes.arrayOf(PropTypes.string),
   }),
   handleDelete: PropTypes.method,
-  handleEdit: PropTypes.method
+  handleEdit: PropTypes.method,
 }
 
 /**
@@ -113,6 +174,28 @@ function questionsReducer(questions, action) {
     case 'delete':
       console.log('delete case')
       return questions
+    case 'questionedit':
+      return questions.map((t) => {
+        if (
+          t.questionid === action.data.questionid &&
+          t.sessionid === action.data.sessionid
+        ) {
+          return action.data
+        } else {
+          return t
+        }
+      })
+    case 'choices edit':
+      return questions.map((t) => {
+        if (
+          t.questionid === action.data.questionid &&
+          t.sessionid === action.data.sessionid
+        ) {
+          return action.data
+        } else {
+          return t
+        }
+      })
     default:
       console.log('default case')
       return questions
