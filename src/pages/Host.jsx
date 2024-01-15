@@ -5,6 +5,7 @@ import GameRoom from './GameRoom'
 import ViewQuestions from './ViewQuestions'
 import '../styles/component.css'
 import '../styles/host.css'
+import ManageRoom from './hostpages/ManageRoom'
 
 function HostPage() {
   return (
@@ -14,6 +15,7 @@ function HostPage() {
         <Route path='/addquestion' element={<AddQuestion />} />
         <Route path='/viewquestions' element={<ViewQuestions />} />
         <Route path='/gameroom' element={<GameRoom />} />
+        <Route path='/manageroom' element={<ManageRoom />} />
       </Routes>
     </>
   )
@@ -48,6 +50,14 @@ function Welcome() {
           }}
         >
           Create Room
+        </button>
+        <button
+          className='btn-round dark-btn-round'
+          onClick={() => {
+            navigate('./manageroom')
+          }}
+        >
+          Manage Room
         </button>
       </div>
     </>
