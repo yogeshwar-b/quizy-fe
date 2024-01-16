@@ -2,6 +2,8 @@ import { generateSlug } from 'random-word-slugs'
 import { useState, useRef } from 'react'
 import socket from '../../socket/socket'
 import ViewQuestions from '../ViewQuestions'
+import AddQuestion from '../AddQuestion'
+import { PropTypes } from 'prop-types'
 
 /**
  * @todo Get the questions only belonging to the session
@@ -10,14 +12,26 @@ import ViewQuestions from '../ViewQuestions'
 export default function ManageRoom() {
   const [roomCreated, changeRoomCreated] = useState({
     connected: false,
-    roomname: '',
+    roomname: ''
   })
   const roomname = useRef(0)
   return roomCreated.connected ? (
     <div>
-      You are now connected to {roomCreated.roomname}. Following are all the
-      questions in the server.
-      <ViewQuestions />
+      You are now connected to
+      <div
+        style={{
+          display: 'inline',
+          textDecorationLine: 'underline',
+          textDecorationThickness: '.1rem',
+          padding: '0 .5rem 0 .5rem',
+          fontWeight: 500
+        }}
+      >
+        {roomCreated.roomname}
+      </div>
+      room. Following are all the questions in the server.
+      <ViewQuestions SessionId={roomCreated.roomname} />
+      <AddQuestion SessionId={roomCreated.roomname} />
     </div>
   ) : (
     <AddRoom isConnected={changeRoomCreated} roomname={roomname} />
@@ -31,7 +45,7 @@ function AddRoom(props) {
 
   function ConnectRoom(req) {
     socket.emit('join', req, function test(resp) {
-      // console.log('got message on connect', resp.msg)
+      console.log('got message on connect', resp)
       if (
         (req.type == 'create' && resp.msg == 'CreateSuccess') ||
         (req.type == 'join' && resp.msg == 'JoinSuccess')
@@ -63,7 +77,7 @@ function AddRoom(props) {
             console.log('connect called')
             ConnectRoom({
               type: 'join',
-              roomname: existingroomname.current.value,
+              roomname: existingroomname.current.value
             })
           }}
         >
@@ -92,4 +106,8 @@ function AddRoom(props) {
       </div>
     </div>
   )
+}
+
+AddRoom.propTypes = {
+  isConnected: PropTypes.Method
 }

@@ -3,7 +3,7 @@ import { backendurl } from '../../config'
 import { PropTypes } from 'prop-types'
 import '../styles/viewquestions.css'
 
-function ViewQuestions() {
+function ViewQuestions(props) {
   // const [questiondata, changeQuestionData] = useState([''])
   const questiondata = ['']
   const [_isLoading, changeisLoading] = useState(true)
@@ -12,32 +12,33 @@ function ViewQuestions() {
   function HandleOnLoad(data) {
     dispatch({
       type: 'initialize',
-      data: data,
+      data: data
     })
   }
 
   function HandleOndelete() {
     dispatch({
-      type: 'delete',
+      type: 'delete'
     })
   }
 
   function HandleOnChoicesEdit(data) {
     dispatch({
       type: 'choices edit',
-      data: data,
+      data: data
     })
   }
   function HandleOnQuestionEdit(data) {
     dispatch({
       type: 'questionedit',
-      data: data,
+      data: data
     })
   }
 
   useEffect(() => {
-    fetch(`${backendurl}/quizhost/viewquestions`, {
-      method: 'get',
+    console.log('props passed to view questions - ', props)
+    fetch(`${backendurl}/quizhost/viewquestionbysession/${props.SessionId}`, {
+      method: 'get'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -63,6 +64,10 @@ function ViewQuestions() {
     </div>
   )
 }
+ViewQuestions.propTypes = {
+  SessionId: PropTypes.string
+}
+
 /**
  * @param {object} props
  * @param {object} props.ques
@@ -96,7 +101,7 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleChoicesEdit({
                 ...ques,
-                choices: e.target.value.split('\n'),
+                choices: e.target.value.split('\n')
               })
             }}
           ></textarea>
@@ -150,10 +155,11 @@ QuestionCard.propTypes = {
   ques: PropTypes.shape({
     questionid: PropTypes.string,
     questiontxt: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.string),
+    choices: PropTypes.arrayOf(PropTypes.string)
   }),
   handleDelete: PropTypes.method,
-  handleEdit: PropTypes.method,
+  handleQuestionEdit: PropTypes.method,
+  handleChoicesEdit: PropTypes.method
 }
 
 /**

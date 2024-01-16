@@ -2,7 +2,7 @@ import { io } from 'https://cdn.socket.io/4.7.4/socket.io.esm.min.js'
 import { backendurl } from '../../config'
 
 const socket = io(backendurl, {
-  autoConnect: false,
+  autoConnect: false
 })
 socket.connect()
 
