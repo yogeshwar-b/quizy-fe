@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { backendurl } from '../../config'
+import '../styles/addquestion.css'
+import { PropTypes } from 'prop-types'
 
-export function AddQuestion() {
+export function AddQuestion(props) {
   const [FormData, changeFormData] = useState({
     Question: '',
     Choices: [''],
     SessionId: '',
     Answer: '',
-    QuestionId: '',
+    QuestionId: ''
   })
   const [SuccessMessage, changeSuccessMessage] = useState('')
   const [SendingQuestion, changeSendingQuestion] = useState(false)
@@ -16,21 +18,22 @@ export function AddQuestion() {
   }
 
   const HandleSubmit = async (event) => {
+    // console.log(props)
     changeSendingQuestion(true)
     event.preventDefault()
     try {
       fetch(`${backendurl}/quizhost/savequestion`, {
         method: 'post',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           questiontxt: FormData.Question,
           questionid: FormData.QuestionId,
           choices: FormData.Choices.split('\n'),
           answer: FormData.Answer,
-          sessionid: FormData.SessionId,
-        }),
+          sessionid: props.SessionId
+        })
       }).then(async (response) => {
         if (response.status == 201) {
           changeSuccessMessage('Question Added')
@@ -55,86 +58,66 @@ export function AddQuestion() {
   }
 
   return (
-    <form
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '2em',
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      onSubmit={HandleSubmit}
-    >
-      Add Question Page
-      <label htmlFor='sessionidinput'>
-        Session Id
-        <input
-          style={{ margin: '1em' }}
-          id='sessionidinput'
-          name='SessionId'
-          type='text'
-          placeholder='enter sessionid'
-          value={FormData.SessionId}
-          onChange={HandleChange}
-        />
-      </label>
-      <label htmlFor='questioninput'>
-        Question text
-        <input
-          style={{ margin: '1em' }}
-          type='text'
-          name='Question'
-          id='questioninput'
-          placeholder='enter question'
-          value={FormData.Question}
-          onChange={HandleChange}
-        />
-      </label>
-      <label htmlFor='questionidinput'>
-        Question Id
-        <input
-          style={{ margin: '1em' }}
-          type='text'
-          name='QuestionId'
-          id='questionidinput'
-          placeholder='enter questionid'
-          value={FormData.QuestionId}
-          onChange={HandleChange}
-        />
-      </label>
-      <label htmlFor='choicesinput'>
-        Choices
-        <textarea
-          style={{ margin: '1em' }}
-          type='text'
-          name='Choices'
-          id='choicesinput'
-          placeholder='enter choices'
-          value={FormData.Choices}
-          onChange={HandleChange}
-        />
-      </label>
-      <label htmlFor='answerinput'>
-        Answer
-        <input
-          style={{ margin: '1em' }}
-          type='text'
-          name='Answer'
-          id='answerinput'
-          placeholder='enter Answer'
-          value={FormData.Answer}
-          onChange={HandleChange}
-        />
-      </label>
+    <form className='flex-form' onSubmit={HandleSubmit}>
+      Add another question
+      <ul className='flex-list'>
+        <li className='flex-listitem'>
+          <label htmlFor='questioninput' className='label-flex'>
+            Question text
+          </label>
+          <input
+            type='text'
+            name='Question'
+            id='questioninput'
+            placeholder='enter question'
+            value={FormData.Question}
+            onChange={HandleChange}
+            className='input-flex'
+          />
+        </li>
+        <li className='flex-listitem'>
+          <label htmlFor='choicesinput' className='label-flex'>
+            Choices
+          </label>
+          <textarea
+            type='text'
+            name='Choices'
+            id='choicesinput'
+            placeholder='enter choices'
+            value={FormData.Choices}
+            onChange={HandleChange}
+            className='input-flex'
+          />
+        </li>
+        <li className='flex-listitem'>
+          <label htmlFor='answerinput' className='label-flex'>
+            Answer
+          </label>
+          <input
+            type='text'
+            name='Answer'
+            id='answerinput'
+            placeholder='enter Answer'
+            value={FormData.Answer}
+            onChange={HandleChange}
+            className='input-flex'
+          />
+        </li>
+      </ul>
       {SendingQuestion ? (
         <div>Sending Question...</div>
       ) : (
         <div>
-          <input type='submit' value='Submit' />
+          <input type='submit' value='Submit' className='btn-round' />
           <span>{SuccessMessage}</span>
         </div>
       )}
     </form>
   )
 }
+
+AddQuestion.propTypes = {
+  SessionId: PropTypes.string
+}
+
+export default AddQuestion

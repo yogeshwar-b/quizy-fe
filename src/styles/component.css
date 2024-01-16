@@ -4,7 +4,7 @@
   /* box-shadow: 0.05rem 0.05rem 0.05rem; */
 }
 
-:is(.dark .btn-round) {
+.dark .btn-round {
   color: rgb(211, 211, 211);
   background-color: rgb(109, 109, 109);
   /* box-shadow: 0.05rem 0.05rem 0.05rem rgb(11, 195, 195); */
