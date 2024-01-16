@@ -4,6 +4,7 @@ import PlayerPage from './pages/Player'
 import HostPage from './pages/Host'
 import { useEffect } from 'react'
 import '../src/styles/app.css'
+import '../src/styles/snackbar.css'
 
 function App() {
   useEffect(() => {
@@ -12,6 +13,7 @@ function App() {
 
   return (
     <div>
+      <div className='snackbar' id='snackbar'></div>
       <div className='nav-row'>
         <div> QUIZY </div>
         <label
