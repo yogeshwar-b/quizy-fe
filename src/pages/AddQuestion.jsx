@@ -2,20 +2,18 @@ import { useState } from 'react'
 import { backendurl } from '../../config'
 import '../styles/addquestion.css'
 import { PropTypes } from 'prop-types'
+import { notify } from '../Components/Snackbar'
 
 export function AddQuestion(props) {
-  const [FormData, changeFormData] = useState({
+  const defaultformdata = {
     Question: '',
     Choices: [''],
     SessionId: '',
     Answer: '',
     QuestionId: ''
-  })
-  const [SuccessMessage, changeSuccessMessage] = useState('')
-  const [SendingQuestion, changeSendingQuestion] = useState(false)
-  function timeout(delay) {
-    return new Promise((res) => setTimeout(res, delay))
   }
+  const [FormData, changeFormData] = useState(defaultformdata)
+  const [SendingQuestion, changeSendingQuestion] = useState(false)
 
   const HandleSubmit = async (event) => {
     // console.log(props)
@@ -36,13 +34,10 @@ export function AddQuestion(props) {
         })
       }).then(async (response) => {
         if (response.status == 201) {
-          changeSuccessMessage('Question Added')
-          await timeout(3000)
-          changeSuccessMessage('')
+          notify('Question Added')
+          changeFormData(defaultformdata)
         } else {
-          changeSuccessMessage('Failed to Add question')
-          await timeout(3000)
-          changeSuccessMessage('')
+          notify('Failed to Add Question')
         }
       })
     } catch (error) {
@@ -109,7 +104,6 @@ export function AddQuestion(props) {
       ) : (
         <div>
           <input type='submit' value='Submit' className='btn-round' />
-          <span>{SuccessMessage}</span>
         </div>
       )}
     </form>
