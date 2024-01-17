@@ -109,5 +109,5 @@ function AddRoom(props) {
 }
 
 AddRoom.propTypes = {
-  isConnected: PropTypes.Method
+  isConnected: PropTypes.func
 }
