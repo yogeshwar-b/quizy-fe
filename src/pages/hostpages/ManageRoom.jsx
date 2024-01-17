@@ -4,6 +4,7 @@ import socket from '../../socket/socket'
 import ViewQuestions from '../ViewQuestions'
 import AddQuestion from '../AddQuestion'
 import { PropTypes } from 'prop-types'
+import { notify } from '../../Components/Snackbar'
 
 /**
  * @todo Get the questions only belonging to the Room
@@ -12,7 +13,7 @@ import { PropTypes } from 'prop-types'
 export default function ManageRoom() {
   const [roomCreated, changeRoomCreated] = useState({
     connected: false,
-    roomname: ''
+    roomname: '',
   })
   const roomname = useRef(0)
   return roomCreated.connected ? (
@@ -24,7 +25,7 @@ export default function ManageRoom() {
           textDecorationLine: 'underline',
           textDecorationThickness: '.1rem',
           padding: '0 .5rem 0 .5rem',
-          fontWeight: 500
+          fontWeight: 500,
         }}
       >
         {roomCreated.roomname}
@@ -62,6 +63,31 @@ function AddRoom(props) {
     })
   }
 
+  function ConnectRoom2(req) {
+    socket.emit('createroom', req, function test(resp) {
+      if (resp.msg == 'CreateSuccess') {
+        props.isConnected({ connected: true, roomname: req.roomname })
+        notify('Room was created')
+      } else if (resp.msg == 'CreateFailed') {
+        notify('Room already exists')
+      } else {
+        notify('Error encountered.')
+      }
+    })
+  }
+  function ConnectRoom3(req) {
+    socket.emit('joinroom', req, function test(resp) {
+      if (resp.msg == 'JoinSuccess') {
+        notify('Room was found')
+        props.isConnected({ connected: true, roomname: req.roomname })
+      } else if (resp.msg == 'JoinFailed') {
+        notify('Room does not exist')
+      } else {
+        notify('Error encountered.')
+      }
+    })
+  }
+
   return (
     <div>
       <div>
@@ -77,11 +103,22 @@ function AddRoom(props) {
             console.log('connect called')
             ConnectRoom({
               type: 'join',
-              roomname: existingroomname.current.value
+              roomname: existingroomname.current.value,
             })
           }}
         >
           Connect
+        </button>
+        <button
+          onClick={() => {
+            console.log('joinroom called')
+            ConnectRoom3({
+              type: 'joinroom',
+              roomname: existingroomname.current.value,
+            })
+          }}
+        >
+          New Connect
         </button>
       </div>
       <br />
@@ -101,6 +138,14 @@ function AddRoom(props) {
         >
           Create
         </button>
+        <button
+          onClick={() => {
+            newroomname = 'mysampleroom'
+            ConnectRoom2({ type: 'create', roomname: newroomname })
+          }}
+        >
+          new create
+        </button>
         <br />
         <div>{errormessage}</div>
       </div>
@@ -109,5 +154,5 @@ function AddRoom(props) {
 }
 
 AddRoom.propTypes = {
-  isConnected: PropTypes.func
+  isConnected: PropTypes.func,
 }
