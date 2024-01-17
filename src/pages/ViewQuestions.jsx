@@ -45,7 +45,7 @@ function ViewQuestions(props) {
   }
   useEffect(() => {
     console.log('props passed to view questions - ', props)
-    fetch(`${backendurl}/quizhost/viewquestionbysession/${props.SessionId}`, {
+    fetch(`${backendurl}/quizhost/viewquestionbyroom/${props.RoomName}`, {
       method: 'get'
     })
       .then((response) => response.json())
@@ -61,7 +61,7 @@ function ViewQuestions(props) {
       {questions?.map((q) => {
         return q !== null ? (
           <QuestionCard
-            key={q.questionid + q.sessionid}
+            key={q.questionid + q.roomname}
             ques={q}
             handleChoicesEdit={HandleOnChoicesEdit}
             handleDelete={HandleOndelete}
@@ -76,7 +76,7 @@ function ViewQuestions(props) {
   )
 }
 ViewQuestions.propTypes = {
-  SessionId: PropTypes.string
+  RoomName: PropTypes.string
 }
 
 /**
@@ -200,9 +200,9 @@ function questionsReducer(questions, action) {
       return questions?.filter((t) => {
         if (
           t.questionid === action.data.questionid &&
-          t.sessionid === action.data.sessionid
+          t.roomname === action.data.roomname
         ) {
-          DeleteQuestionApiCall(t.questionid, t.sessionid)
+          DeleteQuestionApiCall(t.questionid, t.roomname)
           return false
         } else {
           return true
@@ -213,7 +213,7 @@ function questionsReducer(questions, action) {
       return questions.map((t) => {
         if (
           t.questionid === action.data.questionid &&
-          t.sessionid === action.data.sessionid
+          t.roomname === action.data.roomname
         ) {
           //if edit success
           EditQuestionApiCall(action.data)
@@ -224,7 +224,7 @@ function questionsReducer(questions, action) {
       return questions.map((t) => {
         if (
           t.questionid === action.data.questionid &&
-          t.sessionid === action.data.sessionid
+          t.roomname === action.data.roomname
         ) {
           return action.data
         } else {
@@ -235,7 +235,7 @@ function questionsReducer(questions, action) {
       return questions.map((t) => {
         if (
           t.questionid === action.data.questionid &&
-          t.sessionid === action.data.sessionid
+          t.roomname === action.data.roomname
         ) {
           return action.data
         } else {
