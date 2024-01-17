@@ -6,7 +6,7 @@ import AddQuestion from '../AddQuestion'
 import { PropTypes } from 'prop-types'
 
 /**
- * @todo Get the questions only belonging to the session
+ * @todo Get the questions only belonging to the Room
  *
  */
 export default function ManageRoom() {
@@ -30,8 +30,8 @@ export default function ManageRoom() {
         {roomCreated.roomname}
       </div>
       room. Following are all the questions in the server.
-      <ViewQuestions SessionId={roomCreated.roomname} />
-      <AddQuestion SessionId={roomCreated.roomname} />
+      <ViewQuestions RoomName={roomCreated.roomname} />
+      <AddQuestion RoomName={roomCreated.roomname} />
     </div>
   ) : (
     <AddRoom isConnected={changeRoomCreated} roomname={roomname} />

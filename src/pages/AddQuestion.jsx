@@ -8,7 +8,7 @@ export function AddQuestion(props) {
   const defaultformdata = {
     Question: '',
     Choices: [''],
-    SessionId: '',
+    RoomName: '',
     Answer: '',
     QuestionId: ''
   }
@@ -30,7 +30,7 @@ export function AddQuestion(props) {
           questionid: FormData.QuestionId,
           choices: FormData.Choices.split('\n'),
           answer: FormData.Answer,
-          sessionid: props.SessionId
+          roomname: props.RoomName
         })
       }).then(async (response) => {
         if (response.status == 201) {
@@ -111,7 +111,7 @@ export function AddQuestion(props) {
 }
 
 AddQuestion.propTypes = {
-  SessionId: PropTypes.string
+  RoomName: PropTypes.string
 }
 
 export default AddQuestion
