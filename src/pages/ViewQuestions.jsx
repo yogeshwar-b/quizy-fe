@@ -1,7 +1,8 @@
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { backendurl } from '../../config'
 import { PropTypes } from 'prop-types'
 import '../styles/viewquestions.css'
+import { notify } from '../Components/Snackbar'
 
 function ViewQuestions(props) {
   // const [questiondata, changeQuestionData] = useState([''])
@@ -16,9 +17,10 @@ function ViewQuestions(props) {
     })
   }
 
-  function HandleOndelete() {
+  function HandleOndelete(data) {
     dispatch({
-      type: 'delete'
+      type: 'delete',
+      data: data
     })
   }
 
@@ -35,6 +37,12 @@ function ViewQuestions(props) {
     })
   }
 
+  function HandleOnEdit(data) {
+    dispatch({
+      type: 'editsave',
+      data: data
+    })
+  }
   useEffect(() => {
     console.log('props passed to view questions - ', props)
     fetch(`${backendurl}/quizhost/viewquestionbysession/${props.SessionId}`, {
@@ -50,15 +58,18 @@ function ViewQuestions(props) {
     <div>LOADING...</div>
   ) : (
     <div className='questions-flex'>
-      {questions.map((q) => {
-        return (
+      {questions?.map((q) => {
+        return q !== null ? (
           <QuestionCard
             key={q.questionid + q.sessionid}
             ques={q}
             handleChoicesEdit={HandleOnChoicesEdit}
             handleDelete={HandleOndelete}
             handleQuestionEdit={HandleOnQuestionEdit}
+            handleEdit={HandleOnEdit}
           />
+        ) : (
+          <div> </div>
         )
       })}
     </div>
@@ -89,7 +100,10 @@ function QuestionCard(props) {
             type='text'
             value={ques.questiontxt}
             onChange={(e) => {
-              props.handleQuestionEdit({ ...ques, questiontxt: e.target.value })
+              props.handleQuestionEdit({
+                ...ques,
+                questiontxt: e.target.value
+              })
             }}
           />
           <textarea
@@ -106,18 +120,18 @@ function QuestionCard(props) {
             }}
           ></textarea>
           <div className='flex-reverse'>
-            <button
-              className='btn-round'
-              disabled
-              onClick={() => props.handleDelete()}
-            >
+            <button className='btn-round' disabled>
               Delete
             </button>
             <button
               className='btn-round'
               onClick={() => {
                 changeIsEditing(false)
-                // props.handleEdit()
+                props.handleEdit({
+                  ...ques,
+                  questiontxt: ques.questiontxt,
+                  choices: ques.choices
+                })
               }}
             >
               save
@@ -128,12 +142,15 @@ function QuestionCard(props) {
         <>
           <div>{ques.questiontxt}</div>
           <div>
-            {ques.choices.map((choice) => {
+            {ques.choices?.map((choice) => {
               return <div key={choice}>{choice}</div>
             })}
           </div>
           <div className='flex-reverse'>
-            <button className='btn-round' onClick={() => props.handleDelete()}>
+            <button
+              className='btn-round'
+              onClick={() => props.handleDelete({ ...ques })}
+            >
               Delete
             </button>
             <button
@@ -157,9 +174,10 @@ QuestionCard.propTypes = {
     questiontxt: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.string)
   }),
-  handleDelete: PropTypes.method,
-  handleQuestionEdit: PropTypes.method,
-  handleChoicesEdit: PropTypes.method
+  handleDelete: PropTypes.func,
+  handleQuestionEdit: PropTypes.func,
+  handleChoicesEdit: PropTypes.func,
+  handleEdit: PropTypes.func
 }
 
 /**
@@ -178,8 +196,30 @@ function questionsReducer(questions, action) {
       console.log('edit case')
       return questions
     case 'delete':
-      console.log('delete case')
-      return questions
+      console.log('delete case', questions, action.data)
+      return questions?.filter((t) => {
+        if (
+          t.questionid === action.data.questionid &&
+          t.sessionid === action.data.sessionid
+        ) {
+          DeleteQuestionApiCall(t.questionid, t.sessionid)
+          return false
+        } else {
+          return true
+        }
+      })
+    case 'editsave':
+      console.log('inside editsave', action.data)
+      return questions.map((t) => {
+        if (
+          t.questionid === action.data.questionid &&
+          t.sessionid === action.data.sessionid
+        ) {
+          //if edit success
+          EditQuestionApiCall(action.data)
+        }
+        return t
+      })
     case 'questionedit':
       return questions.map((t) => {
         if (
@@ -206,6 +246,64 @@ function questionsReducer(questions, action) {
       console.log('default case')
       return questions
   }
+}
+
+/**
+ *
+ *
+ * @todo - Known issue - return the new question id on successful edit and update the questiondata with that in reducer method
+ */
+function EditQuestionApiCall(newdata) {
+  try {
+    fetch(`${backendurl}/quizhost/editquestion`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...newdata,
+        questiontxt: newdata.questiontxt,
+        choices: newdata.choices,
+        answer: newdata.answer
+      })
+    }).then((response) => {
+      console.log('Edit update response-', response.status)
+      if (response.status == 200) {
+        console.log('Edit Success')
+        notify('Edit success')
+        return true
+      } else {
+        console.log('Edit Failed')
+        notify('Edit failed - Known Issue refresh the window')
+        return false
+      }
+    })
+  } catch (error) {
+    console.log('error found')
+    console.log(error)
+    return false
+  }
+}
+
+/**
+ *
+ * @param {*} questionid
+ * @param {*} roomname
+ * @todo - Send back delete status so that reducer can decide to skip the item from the filter.
+ */
+function DeleteQuestionApiCall(questionid, roomname) {
+  fetch(`${backendurl}/quizhost/deletequestion/${questionid}/${roomname}`, {
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    if (response.status == 200) {
+      notify('Delete Success')
+    } else {
+      notify('Delete Failed')
+    }
+  })
 }
 
 export default ViewQuestions
