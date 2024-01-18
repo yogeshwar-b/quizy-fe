@@ -24,20 +24,14 @@ function ViewQuestions(props) {
     })
   }
 
-  function HandleOnChoicesEdit(data) {
+  function HandleOnEdit(data) {
     dispatch({
-      type: 'choices edit',
-      data: data
-    })
-  }
-  function HandleOnQuestionEdit(data) {
-    dispatch({
-      type: 'questionedit',
+      type: 'edit',
       data: data
     })
   }
 
-  function HandleOnEdit(data) {
+  function HandleOnEditSave(data) {
     dispatch({
       type: 'editsave',
       data: data
@@ -63,10 +57,9 @@ function ViewQuestions(props) {
           <QuestionCard
             key={q.questionid + q.roomname}
             ques={q}
-            handleChoicesEdit={HandleOnChoicesEdit}
             handleDelete={HandleOndelete}
-            handleQuestionEdit={HandleOnQuestionEdit}
             handleEdit={HandleOnEdit}
+            handleEditSave={HandleOnEditSave}
           />
         ) : (
           <div> </div>
@@ -84,6 +77,7 @@ ViewQuestions.propTypes = {
  * @param {object} props.ques
  * @param {string} props.ques.questionid  questionid
  * @param {string} props.ques.questiontxt questiontext
+ * @param {number} props.ques.answer answer
  * @param {string[]} props.ques.choices choices
  * @returns
  */
@@ -100,7 +94,7 @@ function QuestionCard(props) {
             type='text'
             value={ques.questiontxt}
             onChange={(e) => {
-              props.handleQuestionEdit({
+              props.handleEdit({
                 ...ques,
                 questiontxt: e.target.value
               })
@@ -113,12 +107,24 @@ function QuestionCard(props) {
             value={ques.choices.join('\n')}
             rows={ques.choices.length}
             onChange={(e) => {
-              props.handleChoicesEdit({
+              props.handleEdit({
                 ...ques,
                 choices: e.target.value.split('\n')
               })
             }}
           ></textarea>
+          <input
+            type='text'
+            name='answer'
+            id='answerinput'
+            value={ques.answer}
+            onChange={(e) => {
+              props.handleEdit({
+                ...ques,
+                answer: e.target.value
+              })
+            }}
+          />
           <div className='flex-reverse'>
             <button className='btn-round' disabled>
               Delete
@@ -127,7 +133,7 @@ function QuestionCard(props) {
               className='btn-round'
               onClick={() => {
                 changeIsEditing(false)
-                props.handleEdit({
+                props.handleEditSave({
                   ...ques,
                   questiontxt: ques.questiontxt,
                   choices: ques.choices
@@ -146,6 +152,7 @@ function QuestionCard(props) {
               return <div key={choice}>{choice}</div>
             })}
           </div>
+          <div>Answer: {ques.answer}</div>
           <div className='flex-reverse'>
             <button
               className='btn-round'
@@ -172,12 +179,12 @@ QuestionCard.propTypes = {
   ques: PropTypes.shape({
     questionid: PropTypes.string,
     questiontxt: PropTypes.string,
-    choices: PropTypes.arrayOf(PropTypes.string)
+    choices: PropTypes.arrayOf(PropTypes.string),
+    answer: PropTypes.number
   }),
   handleDelete: PropTypes.func,
-  handleQuestionEdit: PropTypes.func,
-  handleChoicesEdit: PropTypes.func,
-  handleEdit: PropTypes.func
+  handleEdit: PropTypes.func,
+  handleEditSave: PropTypes.func
 }
 
 /**
@@ -191,9 +198,6 @@ function questionsReducer(questions, action) {
     case 'initialize':
       console.log('Initialize case')
       return action.data
-    case 'edit':
-      console.log('edit case')
-      return questions
     case 'delete':
       console.log('delete case', questions, action.data)
       return questions?.filter((t) => {
@@ -219,18 +223,7 @@ function questionsReducer(questions, action) {
         }
         return t
       })
-    case 'questionedit':
-      return questions.map((t) => {
-        if (
-          t.questionid === action.data.questionid &&
-          t.roomname === action.data.roomname
-        ) {
-          return action.data
-        } else {
-          return t
-        }
-      })
-    case 'choices edit':
+    case 'edit':
       return questions.map((t) => {
         if (
           t.questionid === action.data.questionid &&
