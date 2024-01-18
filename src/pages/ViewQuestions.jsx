@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { backendurl } from '../../config'
 import { PropTypes } from 'prop-types'
 import '../styles/viewquestions.css'
@@ -184,7 +184,6 @@ QuestionCard.propTypes = {
  *
  * @param {*} questions questions array state object containing all the questions.
  * @param {*} action type of the action that reducer needs to perform on questions array state.
- * @todo Implement Edit,Delete methods once the backend has those methods.
  * @returns
  */
 function questionsReducer(questions, action) {

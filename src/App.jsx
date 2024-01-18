@@ -5,6 +5,7 @@ import HostPage from './pages/Host'
 import { useEffect } from 'react'
 import '../src/styles/app.css'
 import '../src/styles/snackbar.css'
+import RoomPage from './pages/hostpages/RoomPage'
 
 function App() {
   useEffect(() => {
@@ -38,6 +39,8 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/host/*' element={<HostPage />} />
         <Route path='/player' element={<PlayerPage />} />
+        <Route path='/room/:roomname' element={<RoomPage />}></Route>
+        <Route path='/room/' element={<Home />}></Route>
       </Routes>
     </div>
   )

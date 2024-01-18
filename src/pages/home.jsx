@@ -1,31 +1,11 @@
-import { useNavigate } from 'react-router-dom'
 import '../styles/home.css'
 import '../styles/component.css'
+import ManageRoom from './hostpages/ManageRoom'
 
 function Home() {
-  const navigate = useNavigate()
-
   return (
     <div>
-      <div className='flex-row'>
-        <button
-          className='btn-round dark-btn-round'
-          onClick={() => {
-            navigate('/host')
-          }}
-        >
-          Host
-        </button>
-
-        <button
-          className='btn-round dark-btn-round'
-          onClick={() => {
-            navigate('/player')
-          }}
-        >
-          Player
-        </button>
-      </div>
+      <ManageRoom />
     </div>
   )
 }
