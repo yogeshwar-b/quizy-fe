@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import socket from '../../socket/socket'
 import { notify } from '../../Components/Snackbar'
 import { useNavigate } from 'react-router-dom'
+import PlayerLoginView from '../playerpages/PlayerLoginView'
 
 export default function ManageRoom() {
   return <AddRoom />
@@ -48,15 +49,7 @@ function AddRoom() {
 
   return (
     <div>
-      <h2>Player View</h2>
-      <input type='text' ref={playerrooomname} />
-      <button
-        onClick={() => {
-          Navigate(`./room/${playerrooomname.current.value}`)
-        }}
-      >
-        Join Room
-      </button>
+      <PlayerLoginView />
       <br />
       <div>
         <h2>Host View</h2>
@@ -74,7 +67,7 @@ function AddRoom() {
                 console.log('joinroom called')
                 JoinExistingRoom({
                   type: 'joinroom',
-                  roomname: existingroomname.current.value
+                  roomname: existingroomname.current.value,
                 })
               }}
             >
