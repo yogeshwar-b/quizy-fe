@@ -13,34 +13,34 @@ function ViewQuestions(props) {
   function HandleOnLoad(data) {
     dispatch({
       type: 'initialize',
-      data: data
+      data: data,
     })
   }
 
   function HandleOndelete(data) {
     dispatch({
       type: 'delete',
-      data: data
+      data: data,
     })
   }
 
   function HandleOnEdit(data) {
     dispatch({
       type: 'edit',
-      data: data
+      data: data,
     })
   }
 
-  function HandleOnEditSave(data) {
-    dispatch({
+  async function HandleOnEditSave(data) {
+    await dispatch({
       type: 'editsave',
-      data: data
+      data: data,
     })
   }
   useEffect(() => {
     console.log('props passed to view questions - ', props)
     fetch(`${backendurl}/quizhost/viewquestionbyroom/${props.RoomName}`, {
-      method: 'get'
+      method: 'get',
     })
       .then((response) => response.json())
       .then((data) => {
@@ -69,7 +69,7 @@ function ViewQuestions(props) {
   )
 }
 ViewQuestions.propTypes = {
-  RoomName: PropTypes.string
+  RoomName: PropTypes.string,
 }
 
 /**
@@ -96,7 +96,7 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                questiontxt: e.target.value
+                questiontxt: e.target.value,
               })
             }}
           />
@@ -109,19 +109,19 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                choices: e.target.value.split('\n')
+                choices: e.target.value.split('\n'),
               })
             }}
           ></textarea>
           <input
-            type='text'
+            type='number'
             name='answer'
             id='answerinput'
-            value={ques.answer}
+            value={Number(ques.answer)}
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                answer: e.target.value
+                answer: Number(e.target.value),
               })
             }}
           />
@@ -131,12 +131,22 @@ function QuestionCard(props) {
             </button>
             <button
               className='btn-round'
-              onClick={() => {
-                changeIsEditing(false)
-                props.handleEditSave({
+              onClick={async () => {
+                await EditQuestionApiCall({
                   ...ques,
                   questiontxt: ques.questiontxt,
-                  choices: ques.choices
+                  choices: ques.choices,
+                }).then((resp) => {
+                  if (resp.status == 200) {
+                    notify('update success')
+                    props.handleEditSave({
+                      ...ques,
+                      newquestionid: resp.newQuestionid,
+                    })
+                  } else {
+                    notify('update failed - Please refresh')
+                  }
+                  changeIsEditing(false)
                 })
               }}
             >
@@ -180,11 +190,11 @@ QuestionCard.propTypes = {
     questionid: PropTypes.string,
     questiontxt: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.string),
-    answer: PropTypes.number
+    answer: PropTypes.number,
   }),
   handleDelete: PropTypes.func,
   handleEdit: PropTypes.func,
-  handleEditSave: PropTypes.func
+  handleEditSave: PropTypes.func,
 }
 
 /**
@@ -212,16 +222,15 @@ function questionsReducer(questions, action) {
         }
       })
     case 'editsave':
-      console.log('inside editsave', action.data)
       return questions.map((t) => {
         if (
           t.questionid === action.data.questionid &&
           t.roomname === action.data.roomname
         ) {
-          //if edit success
-          EditQuestionApiCall(action.data)
+          return { ...t, questionid: action.data.newquestionid }
+        } else {
+          return t
         }
-        return t
       })
     case 'edit':
       return questions.map((t) => {
@@ -240,40 +249,32 @@ function questionsReducer(questions, action) {
   }
 }
 
-/**
- *
- *
- * @todo - Known issue - return the new question id on successful edit and update the questiondata with that in reducer method
- */
-function EditQuestionApiCall(newdata) {
+async function EditQuestionApiCall(newdata) {
   try {
-    fetch(`${backendurl}/quizhost/editquestion`, {
+    return fetch(`${backendurl}/quizhost/editquestion`, {
       method: 'put',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...newdata,
         questiontxt: newdata.questiontxt,
         choices: newdata.choices,
-        answer: newdata.answer
-      })
-    }).then((response) => {
-      console.log('Edit update response-', response.status)
-      if (response.status == 200) {
-        console.log('Edit Success')
-        notify('Edit success')
-        return true
-      } else {
-        console.log('Edit Failed')
-        notify('Edit failed - Known Issue refresh the window')
-        return false
-      }
+        answer: newdata.answer,
+      }),
     })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.message == 'Updated Successfully') {
+          return { status: 200, newQuestionid: response.newQuestionid }
+        } else {
+          return { status: 400 }
+        }
+      })
   } catch (error) {
     console.log('error found')
     console.log(error)
-    return false
+    return { status: 400 }
   }
 }
 
@@ -287,8 +288,8 @@ function DeleteQuestionApiCall(questionid, roomname) {
   fetch(`${backendurl}/quizhost/deletequestion/${questionid}/${roomname}`, {
     method: 'delete',
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   }).then((response) => {
     if (response.status == 200) {
       notify('Delete Success')
