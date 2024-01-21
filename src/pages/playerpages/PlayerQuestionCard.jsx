@@ -1,6 +1,7 @@
 import { notify } from '../../Components/Snackbar'
 import { useState } from 'react'
 import '../../styles/playerquestioncard.css'
+import socket from '../../socket/socket'
 
 /**
  * @todo- delete sample data
@@ -15,15 +16,28 @@ const sampledata = {
 }
 
 export default function PlayerQuestionCard() {
-  const question = sampledata
+  // const questionstate = sampledata
+  socket.on('receivednextquestion', (arg) => {
+    changereceiveddata(arg + '\n' + receiveddata)
+    changeQuestionState(arg.questiondata)
+    console.log(arg)
+  })
   const [disable, changedisable] = useState(false)
+  const [questionstate, changeQuestionState] = useState({
+    _id: '65a8a2c1f5e20aa09adaddf4',
+    questionid: '802b53c4daaf50369cf0dc0e84f34fc3',
+    questiontxt: 'Waiting for First Quesition',
+    choices: [],
+    answer: 1,
+    __v: 0,
+  })
   let count = 0
   return (
     <div>
       <div> Player question card</div>
-      <div>{question.questiontxt}</div>
+      <div>{questionstate.questiontxt}</div>
       <div className='choices-list'>
-        {question.choices.map((choice) => {
+        {questionstate.choices?.map((choice) => {
           return (
             <button
               disabled={disable}
