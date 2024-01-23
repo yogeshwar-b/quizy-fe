@@ -10,14 +10,7 @@ export default function PlayerRoom() {
   return (
     <div>
       <div> This is Player Room - {roomname}</div>
-      waiting for the game to start
       <PlayerQuestionCard />
-      <br />
-      <br />
-      <br />
-      --- ⬇️⬇️⬇️🚫🚫🚫all questions view temporary 🚫🚫🚫⬇️⬇️⬇️---
-      <br />
-      {/* <ViewQuestions RoomName={roomname}></ViewQuestions> */}
     </div>
   )
 }

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import socket from '../../socket/socket'
+import { backendurl } from '../../../config'
+import { notify } from '../../Components/Snackbar'
 
 export default function SendQuestion(props) {
   const [questionnumber, changequestionnumber] = useState(0)
@@ -11,8 +13,9 @@ export default function SendQuestion(props) {
       <div>SendQuestion</div>
       <button
         onClick={() => {
-          sendquestionsocketcall(questionnumber, props.RoomName)
-          changequestionnumber(questionnumber + 1)
+          sendquestionsocketcall(questionnumber, props.RoomName).then(
+            changequestionnumber(questionnumber + 1)
+          )
         }}
       >
         Send question number {questionnumber}
@@ -29,17 +32,14 @@ export default function SendQuestion(props) {
 async function sendquestionsocketcall(questionnumber, roomname) {
   try {
     console.log('sending question number ' + questionnumber)
-    socket.emit(
-      'sendquestion',
-      { questionnumber: questionnumber, roomname: roomname },
-      function test(resp) {
-        if (resp.msg == 'QuestionSent') {
-          notify('Question was sent')
-        } else {
-          notify('ERROR Question not sent')
-        }
-      }
-    )
+    fetch(`${backendurl}/quizhost/sendquestion/${roomname}/${questionnumber}`, {
+      method: 'get',
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        notify('question sent')
+      })
   } catch (error) {
     notify(error)
   }

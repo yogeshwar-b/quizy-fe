@@ -1,5 +1,5 @@
 import { notify } from '../../Components/Snackbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../../styles/playerquestioncard.css'
 import socket from '../../socket/socket'
 
@@ -17,11 +17,15 @@ const sampledata = {
 
 export default function PlayerQuestionCard() {
   // const questionstate = sampledata
-  socket.on('receivednextquestion', (arg) => {
-    changereceiveddata(arg + '\n' + receiveddata)
-    changeQuestionState(arg.questiondata)
-    console.log(arg)
+
+  useEffect(() => {
+    socket.on('receivednextquestion', (arg) => {
+      // changereceiveddata(arg + '\n' + receiveddata)
+      changeQuestionState(arg)
+      // console.log('received question', arg)
+    })
   })
+
   const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
     _id: '65a8a2c1f5e20aa09adaddf4',
@@ -34,7 +38,7 @@ export default function PlayerQuestionCard() {
   let count = 0
   return (
     <div>
-      <div> Player question card</div>
+      <div> Player question card below</div>
       <div>{questionstate.questiontxt}</div>
       <div className='choices-list'>
         {questionstate.choices?.map((choice) => {
