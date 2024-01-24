@@ -4,7 +4,7 @@ import { backendurl } from '../../../config'
 import { notify } from '../../Components/Snackbar'
 
 export default function SendQuestion(props) {
-  const [questionnumber, changequestionnumber] = useState(0)
+  const [questionnumber, changequestionnumber] = useState(1)
   useEffect(() => {
     console.log('get question number ' + questionnumber)
   }, [])
@@ -14,7 +14,12 @@ export default function SendQuestion(props) {
       <button
         onClick={() => {
           sendquestionsocketcall(questionnumber, props.RoomName).then(
-            changequestionnumber(questionnumber + 1)
+            (resp) => {
+              console.log('gotresp', resp)
+              resp.message !== 'item not found'
+                ? changequestionnumber(questionnumber + 1)
+                : notify('limit reached')
+            }
           )
         }}
       >
@@ -32,13 +37,17 @@ export default function SendQuestion(props) {
 async function sendquestionsocketcall(questionnumber, roomname) {
   try {
     console.log('sending question number ' + questionnumber)
-    fetch(`${backendurl}/quizhost/sendquestion/${roomname}/${questionnumber}`, {
-      method: 'get',
-    })
+    return fetch(
+      `${backendurl}/quizhost/sendquestion/${roomname}/${questionnumber}`,
+      {
+        method: 'get'
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
-        notify('question sent')
+        return data
+        // console.log(data)
+        // notify('question sent')
       })
   } catch (error) {
     notify(error)
