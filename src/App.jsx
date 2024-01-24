@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import '../src/styles/app.css'
 import '../src/styles/snackbar.css'
 import RoomPage from './pages/hostpages/RoomPage'
+import PlayerRoom from './pages/playerpages/PlayerRoom'
 
 function App() {
   useEffect(() => {
@@ -39,8 +40,9 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/host/*' element={<HostPage />} />
         <Route path='/player' element={<PlayerPage />} />
-        <Route path='/room/:roomname' element={<RoomPage />}></Route>
+        <Route path='/manageroom/:roomname' element={<RoomPage />}></Route>
         <Route path='/room/' element={<Home />}></Route>
+        <Route path='/room/:roomname' element={<PlayerRoom />}></Route>
       </Routes>
     </div>
   )

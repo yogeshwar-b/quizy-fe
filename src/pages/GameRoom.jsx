@@ -7,7 +7,7 @@ function GameRoom() {
   const senddata = useRef(0)
   const [receiveddata, changereceiveddata] = useState('')
   socket.on('hello', (arg) => {
-    changereceiveddata(arg + '\n' + receiveddata)
+    // changereceiveddata(arg + '\n' + receiveddata)
     console.log(arg)
   })
   useEffect(() => {

@@ -1,0 +1,27 @@
+.choices-list {
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+  gap: 0.5rem;
+}
+
+.choice-button {
+  /* background: none; */
+  color: rgb(28, 28, 28);
+  background-color: rgb(176, 176, 176);
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+}
+
+.dark .choice-button {
+  color: black;
+  background-color: white;
+}
+.choice-button.submitted {
+  background-color: green;
+  color: white;
+}
+/* .choice-button:disabled {
+  background: none;
+} */
