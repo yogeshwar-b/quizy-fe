@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { AddQuestion } from './AddQuestion'
 import GameRoom from './GameRoom'
-import ViewQuestions from './ViewQuestions'
+import ViewEditQuestions from './ViewQuestions'
 import '../styles/component.css'
 import '../styles/host.css'
 import ManageRoom from './hostpages/ManageRoom'
@@ -13,9 +13,13 @@ function HostPage() {
       <Routes>
         <Route path='/' element={<Welcome />} />
         <Route path='/addquestion' element={<AddQuestion />} />
-        <Route path='/viewquestions' element={<ViewQuestions />} />
         <Route path='/gameroom' element={<GameRoom />} />
         <Route path='/manageroom' element={<ManageRoom />} />
+
+        <Route
+          path='/manageroom/viewquestions'
+          element={<ViewEditQuestions />}
+        />
       </Routes>
     </>
   )

@@ -3,8 +3,10 @@ import { backendurl } from '../../config'
 import '../styles/addquestion.css'
 import { PropTypes } from 'prop-types'
 import { notify } from '../Components/Snackbar'
+import { useParams } from 'react-router-dom'
 
-export function AddQuestion(props) {
+export function AddQuestion() {
+  const { roomname } = useParams()
   const defaultformdata = {
     Question: '',
     Choices: [''],
@@ -30,7 +32,7 @@ export function AddQuestion(props) {
           questionid: FormData.QuestionId,
           choices: FormData.Choices.split('\n'),
           answer: FormData.Answer,
-          roomname: props.RoomName
+          roomname: roomname
         })
       }).then(async (response) => {
         if (response.status == 201) {

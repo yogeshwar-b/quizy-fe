@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import ViewQuestions from '../ViewQuestions'
+// import ViewEditQuestions from '../ViewQuestions'
 import PlayerQuestionCard from './PlayerQuestionCard'
 
 export default function PlayerRoom() {

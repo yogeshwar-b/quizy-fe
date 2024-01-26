@@ -1,11 +1,25 @@
 import { useEffect, useReducer, useState } from 'react'
 import { backendurl } from '../../config'
+import { useParams } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import '../styles/viewquestions.css'
 import { notify } from '../Components/Snackbar'
+import AddQuestion from './AddQuestion'
+
+function ViewEditQuestions() {
+  return (
+    <>
+      <ViewQuestions />
+      <AddQuestion></AddQuestion>
+    </>
+  )
+}
 
 function ViewQuestions(props) {
   // const [questiondata, changeQuestionData] = useState([''])
+  var { roomname } = useParams()
+  console.log(roomname, useParams())
+  // props.RoomName = roomname
   const questiondata = ['']
   const [_isLoading, changeisLoading] = useState(true)
   const [questions, dispatch] = useReducer(questionsReducer, questiondata)
@@ -13,34 +27,37 @@ function ViewQuestions(props) {
   function HandleOnLoad(data) {
     dispatch({
       type: 'initialize',
-      data: data,
+      data: data
     })
   }
 
   function HandleOndelete(data) {
     dispatch({
       type: 'delete',
-      data: data,
+      data: data
     })
   }
 
   function HandleOnEdit(data) {
     dispatch({
       type: 'edit',
-      data: data,
+      data: data
     })
   }
 
   async function HandleOnEditSave(data) {
     await dispatch({
       type: 'editsave',
-      data: data,
+      data: data
     })
   }
   useEffect(() => {
     console.log('props passed to view questions - ', props)
-    fetch(`${backendurl}/quizhost/viewquestionbyroom/${props.RoomName}`, {
-      method: 'get',
+    // console.log(useParams())
+    let RoomName = roomname
+    // let RoomName=props.RoomName
+    fetch(`${backendurl}/quizhost/viewquestionbyroom/${RoomName}`, {
+      method: 'get'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -69,7 +86,7 @@ function ViewQuestions(props) {
   )
 }
 ViewQuestions.propTypes = {
-  RoomName: PropTypes.string,
+  RoomName: PropTypes.string
 }
 
 /**
@@ -96,7 +113,7 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                questiontxt: e.target.value,
+                questiontxt: e.target.value
               })
             }}
           />
@@ -109,7 +126,7 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                choices: e.target.value.split('\n'),
+                choices: e.target.value.split('\n')
               })
             }}
           ></textarea>
@@ -121,7 +138,7 @@ function QuestionCard(props) {
             onChange={(e) => {
               props.handleEdit({
                 ...ques,
-                answer: Number(e.target.value),
+                answer: Number(e.target.value)
               })
             }}
           />
@@ -135,13 +152,13 @@ function QuestionCard(props) {
                 await EditQuestionApiCall({
                   ...ques,
                   questiontxt: ques.questiontxt,
-                  choices: ques.choices,
+                  choices: ques.choices
                 }).then((resp) => {
                   if (resp.status == 200) {
                     notify('update success')
                     props.handleEditSave({
                       ...ques,
-                      newquestionid: resp.newQuestionid,
+                      newquestionid: resp.newQuestionid
                     })
                   } else {
                     notify('update failed - Please refresh')
@@ -190,11 +207,11 @@ QuestionCard.propTypes = {
     questionid: PropTypes.string,
     questiontxt: PropTypes.string,
     choices: PropTypes.arrayOf(PropTypes.string),
-    answer: PropTypes.number,
+    answer: PropTypes.number
   }),
   handleDelete: PropTypes.func,
   handleEdit: PropTypes.func,
-  handleEditSave: PropTypes.func,
+  handleEditSave: PropTypes.func
 }
 
 /**
@@ -254,14 +271,14 @@ async function EditQuestionApiCall(newdata) {
     return fetch(`${backendurl}/quizhost/editquestion`, {
       method: 'put',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         ...newdata,
         questiontxt: newdata.questiontxt,
         choices: newdata.choices,
-        answer: newdata.answer,
-      }),
+        answer: newdata.answer
+      })
     })
       .then((response) => response.json())
       .then((response) => {
@@ -288,8 +305,8 @@ function DeleteQuestionApiCall(questionid, roomname) {
   fetch(`${backendurl}/quizhost/deletequestion/${questionid}/${roomname}`, {
     method: 'delete',
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   }).then((response) => {
     if (response.status == 200) {
       notify('Delete Success')
@@ -299,4 +316,4 @@ function DeleteQuestionApiCall(questionid, roomname) {
   })
 }
 
-export default ViewQuestions
+export default ViewEditQuestions

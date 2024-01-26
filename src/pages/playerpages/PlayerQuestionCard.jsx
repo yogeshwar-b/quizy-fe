@@ -12,7 +12,7 @@ const sampledata = {
   questiontxt: 'My question 1',
   choices: ['choice1', 'choice2', 'choice3'],
   answer: 1,
-  __v: 0,
+  __v: 0
 }
 
 export default function PlayerQuestionCard() {
@@ -33,7 +33,7 @@ export default function PlayerQuestionCard() {
     questiontxt: 'Waiting for First Quesition',
     choices: [],
     answer: 1,
-    __v: 0,
+    __v: 0
   })
   let count = 0
   return (
