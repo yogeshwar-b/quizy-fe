@@ -22,7 +22,7 @@ export default function SendQuestion(props) {
   //     __v: 0
   //   }
   // ])
-  const [loadingQuestions, changeLoadingQuestions] = useState(false)
+  const [loadingQuestions, changeLoadingQuestions] = useState(true)
   useEffect(() => {
     console.log('get question number ' + questionnumber)
     console.log('props passed to view questions - ', props)

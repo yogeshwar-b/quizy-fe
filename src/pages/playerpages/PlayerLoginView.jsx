@@ -6,24 +6,29 @@ import { notify } from '../../Components/Snackbar'
 export default function PlayerLoginView(props) {
   const Navigate = useNavigate()
   const playerrooomname = useRef(0)
+  /**
+   *
+   * @todo - clean up
+   */
   function JoinExistingRoom(req) {
-    try {
-      console.log('inside join existing room')
-      socket.emit('joinroom', req, function test(resp) {
-        console.log(resp)
-        if (resp.msg == 'JoinSuccess') {
-          notify('Room was found')
-          // props.isConnected({ connected: true, roomname: req.roomname })
-          Navigate(`./room/${playerrooomname.current.value}`)
-        } else if (resp.msg == 'JoinFailed') {
-          notify('Room does not exist')
-        } else {
-          notify('Error encountered.')
-        }
-      })
-    } catch (error) {
-      notify(error)
-    }
+    Navigate(`./room/${playerrooomname.current.value}`)
+
+    // try {
+    //   console.log('inside join existing room')
+    //   socket.emit('joinroom', req, function test(resp) {
+    //     console.log(resp)
+    //     if (resp.msg == 'JoinSuccess') {
+    //       notify('Room was found')
+    //       // props.isConnected({ connected: true, roomname: req.roomname })
+    //     } else if (resp.msg == 'JoinFailed') {
+    //       notify('Room does not exist')
+    //     } else {
+    //       notify('Error encountered.')
+    //     }
+    //   })
+    // } catch (error) {
+    //   notify(error)
+    // }
   }
   // useEffect(() => {})
   return (
@@ -34,7 +39,7 @@ export default function PlayerLoginView(props) {
         onClick={() => {
           JoinExistingRoom({
             type: 'joinroom',
-            roomname: playerrooomname.current.value,
+            roomname: playerrooomname.current.value
           })
         }}
       >
