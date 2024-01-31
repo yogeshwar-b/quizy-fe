@@ -12,7 +12,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 export default function PlayerQuestionCard() {
   // const questionstate = sampledata
-  var { roomname } = useParams()
+  // var { roomname } = useParams()
 
   socket.on('receivednextquestion', (arg) => {
     // changereceiveddata(arg + '\n' + receiveddata)
@@ -21,34 +21,6 @@ export default function PlayerQuestionCard() {
     choicesref.current.resetchoicestates()
     console.log('received question', arg)
   })
-  const Navigate = useNavigate()
-  function JoinExistingRoom(req) {
-    try {
-      console.log('inside join existing room')
-      socket.emit('joinroom', req, function test(resp) {
-        // console.log(resp)
-        if (resp.msg == 'JoinSuccess') {
-          notify('Room was found')
-          // props.isConnected({ connected: true, roomname: req.roomname })
-          // Navigate(`./room/${playerrooomname.current.value}`)
-        } else if (resp.msg == 'JoinFailed') {
-          Navigate(`/`)
-          notify('Room does not exist')
-        } else {
-          Navigate(`/`)
-          notify('Error encountered.')
-        }
-      })
-    } catch (error) {
-      notify(error)
-    }
-  }
-  useEffect(() => {
-    JoinExistingRoom({
-      type: 'joinroom',
-      roomname: roomname
-    })
-  }, [])
 
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
@@ -96,6 +68,9 @@ const Choices = forwardRef(function Choices(props, ref) {
             id={count++}
             key={count}
             onClick={(e) => {
+              let prev = localStorage.getItem('player')
+              localStorage.setItem('player', prev + e.target.innerText + ',')
+              console.log(localStorage, e.target.innerText)
               // e.target.classList.add('submitted')
               changeChoiceState({
                 isSubmitted: true,
