@@ -4,6 +4,7 @@ import socket from '../../socket/socket'
 import { notify } from '../../Components/Snackbar'
 import { useNavigate } from 'react-router-dom'
 import PlayerLoginView from '../playerpages/PlayerLoginView'
+import '../../styles/manageroom.css'
 
 export default function ManageRoom() {
   return <AddRoom />
@@ -11,11 +12,17 @@ export default function ManageRoom() {
 
 function AddRoom() {
   const existingroomname = useRef(0)
-  const playerrooomname = useRef(0)
+  const existingroomsecret = useRef(0)
+  const newroomname = useRef(0)
+  const newroomsecret = useRef(0)
+
+  // const playerrooomname = useRef(0)
   // const newroomname = useRef(0)
   const Navigate = useNavigate()
 
   function CreateRoom(req) {
+    console.log('newroom request', req)
+    // return
     socket.emit('createroom', req, function test(resp) {
       console.log(resp)
       if (resp.msg == 'CreateSuccess') {
@@ -28,10 +35,10 @@ function AddRoom() {
       }
     })
   }
-  function JoinExistingRoom(req) {
+  function ManageRoom(req) {
     try {
-      console.log('inside join existing room')
-      socket.emit('joinroom', req, function test(resp) {
+      console.log('inside manage room', req)
+      socket.emit('manageroom', req, function test(resp) {
         if (resp.msg == 'JoinSuccess') {
           notify('Room was found')
           // props.isConnected({ connected: true, roomname: req.roomname })
@@ -54,7 +61,7 @@ function AddRoom() {
       <div>
         <h2>Host View</h2>
         <div>
-          <div>
+          <div className='flex-col'>
             Connect to Existing Room
             <input
               type='text'
@@ -62,24 +69,55 @@ function AddRoom() {
               ref={existingroomname}
               placeholder='enter name of existing room'
             />
+            <input
+              type='text'
+              id='roomsecret'
+              ref={existingroomsecret}
+              placeholder='enter name of existing room'
+            />
             <button
               onClick={() => {
-                console.log('joinroom called')
-                JoinExistingRoom({
-                  type: 'joinroom',
-                  roomname: existingroomname.current.value,
-                })
+                console.log('manageroom called')
+
+                existingroomname.current.value &&
+                existingroomsecret.current.value
+                  ? ManageRoom({
+                      type: 'manageroom',
+                      roomname: existingroomname.current.value,
+                      roomsecret: existingroomsecret.current.value
+                    })
+                  : notify('Please enter room details')
               }}
             >
               Connect
             </button>
           </div>
           <br />
-          <div>
+          <div className='flex-col'>
             Create New Room
+            <input
+              type='text'
+              id='newroomname'
+              ref={newroomname}
+              placeholder={generateSlug()}
+            />
+            <input
+              type='text'
+              id='newroomsecret'
+              ref={newroomsecret}
+              placeholder={generateSlug(1)}
+            />
             <button
               onClick={() => {
-                CreateRoom({ type: 'createroom', roomname: generateSlug() })
+                CreateRoom({
+                  type: 'createroom',
+                  roomname: newroomname.current.value
+                    ? newroomname.current.value
+                    : newroomname.current.placeholder,
+                  roomsecret: newroomsecret.current.value
+                    ? newroomsecret.current.value
+                    : newroomsecret.current.placeholder
+                })
               }}
             >
               Create
