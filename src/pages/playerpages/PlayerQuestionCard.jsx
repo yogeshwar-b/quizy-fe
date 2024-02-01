@@ -10,9 +10,10 @@ import '../../styles/playerquestioncard.css'
 import socket from '../../socket/socket'
 import { useParams, useNavigate } from 'react-router-dom'
 
-export default function PlayerQuestionCard() {
+export default function PlayerQuestionCard(props) {
   // const questionstate = sampledata
-  var { roomname } = useParams()
+  // var { roomname } = useParams()
+  const playername = props.playername
 
   socket.on('receivednextquestion', (arg) => {
     // changereceiveddata(arg + '\n' + receiveddata)
@@ -21,35 +22,28 @@ export default function PlayerQuestionCard() {
     choicesref.current.resetchoicestates()
     console.log('received question', arg)
   })
-  const Navigate = useNavigate()
-  function JoinExistingRoom(req) {
+
+  socket.on('submitchoices', (arg) => {
     try {
-      console.log('inside join existing room')
-      socket.emit('joinroom', req, function test(resp) {
-        // console.log(resp)
-        if (resp.msg == 'JoinSuccess') {
-          notify('Room was found')
-          // props.isConnected({ connected: true, roomname: req.roomname })
-          // Navigate(`./room/${playerrooomname.current.value}`)
-        } else if (resp.msg == 'JoinFailed') {
-          Navigate(`/`)
-          notify('Room does not exist')
+      fetch(`${backendurl}/player/submitchoices`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(localStorage.getItem(playername))
+      }).then(async (response) => {
+        if (response.status == 201) {
+          notify('submitted choices')
         } else {
-          Navigate(`/`)
-          notify('Error encountered.')
+          notify('Failed to submit')
         }
       })
     } catch (error) {
-      notify(error)
+      console.log('error found')
+      console.log(error)
     }
-  }
-  useEffect(() => {
-    JoinExistingRoom({
-      type: 'joinroom',
-      roomname: roomname
-    })
-  }, [])
-
+    console.log('submit questions', arg)
+  })
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
     _id: 'xx',
@@ -65,7 +59,11 @@ export default function PlayerQuestionCard() {
     <div>
       {/* <div> Player question card below</div> */}
       <div>{questionstate.questiontxt}</div>
-      <Choices choicedata={questionstate.choices} ref={choicesref} />
+      <Choices
+        choicedata={questionstate.choices}
+        playername={playername}
+        ref={choicesref}
+      />
     </div>
   )
 }
@@ -96,6 +94,12 @@ const Choices = forwardRef(function Choices(props, ref) {
             id={count++}
             key={count}
             onClick={(e) => {
+              let prev = localStorage.getItem('player')
+              localStorage.setItem(
+                props.playername,
+                prev + e.target.innerText + ','
+              )
+              console.log(localStorage, e.target.innerText)
               // e.target.classList.add('submitted')
               changeChoiceState({
                 isSubmitted: true,
