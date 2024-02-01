@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 // import ViewEditQuestions from '../ViewQuestions'
 import PlayerQuestionCard from './PlayerQuestionCard'
 import { useEffect } from 'react'
@@ -6,7 +6,9 @@ import { notify } from '../../Components/Snackbar'
 import socket from '../../socket/socket'
 
 export default function PlayerRoom() {
-  let { roomname } = useParams()
+  // let { roomname } = useParams()
+  const { state } = useLocation()
+  const { playername, roomname, reqtype } = state
   /**
    * @todo - cleanup
    */
@@ -20,7 +22,7 @@ export default function PlayerRoom() {
     try {
       console.log('inside join existing room')
       socket.emit('joinroom', req, function test(resp) {
-        // console.log(resp)
+        console.log(resp)
         if (resp.msg == 'JoinSuccess') {
           notify('Room was found')
           localStorage.setItem('player', '')
@@ -39,15 +41,19 @@ export default function PlayerRoom() {
     }
   }
   useEffect(() => {
+    console.log(roomname)
     JoinExistingRoom({
-      type: 'joinroom',
-      roomname: roomname
+      type: reqtype,
+      roomname: roomname,
+      playername: playername
     })
   }, [])
   return (
     <div>
-      <div> This is Player Room - {roomname}</div>
-      <PlayerQuestionCard />
+      <div>
+        This is Player Room - {roomname} You joined as {playername}
+      </div>
+      <PlayerQuestionCard playername={playername} />
     </div>
   )
 }

@@ -10,9 +10,10 @@ import '../../styles/playerquestioncard.css'
 import socket from '../../socket/socket'
 import { useParams, useNavigate } from 'react-router-dom'
 
-export default function PlayerQuestionCard() {
+export default function PlayerQuestionCard(props) {
   // const questionstate = sampledata
   // var { roomname } = useParams()
+  const playername = props.playername
 
   socket.on('receivednextquestion', (arg) => {
     // changereceiveddata(arg + '\n' + receiveddata)
@@ -22,6 +23,27 @@ export default function PlayerQuestionCard() {
     console.log('received question', arg)
   })
 
+  socket.on('submitchoices', (arg) => {
+    try {
+      fetch(`${backendurl}/player/submitchoices`, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(localStorage.getItem(playername))
+      }).then(async (response) => {
+        if (response.status == 201) {
+          notify('submitted choices')
+        } else {
+          notify('Failed to submit')
+        }
+      })
+    } catch (error) {
+      console.log('error found')
+      console.log(error)
+    }
+    console.log('submit questions', arg)
+  })
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
     _id: 'xx',
@@ -37,7 +59,11 @@ export default function PlayerQuestionCard() {
     <div>
       {/* <div> Player question card below</div> */}
       <div>{questionstate.questiontxt}</div>
-      <Choices choicedata={questionstate.choices} ref={choicesref} />
+      <Choices
+        choicedata={questionstate.choices}
+        playername={playername}
+        ref={choicesref}
+      />
     </div>
   )
 }
@@ -69,7 +95,10 @@ const Choices = forwardRef(function Choices(props, ref) {
             key={count}
             onClick={(e) => {
               let prev = localStorage.getItem('player')
-              localStorage.setItem('player', prev + e.target.innerText + ',')
+              localStorage.setItem(
+                props.playername,
+                prev + e.target.innerText + ','
+              )
               console.log(localStorage, e.target.innerText)
               // e.target.classList.add('submitted')
               changeChoiceState({
