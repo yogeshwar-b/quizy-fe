@@ -6,9 +6,23 @@ import { notify } from '../../Components/Snackbar'
 import '../../styles/viewquestions.css'
 
 export default function SendQuestion(props) {
+  function sendchoicescall(roomname) {
+    console.log('calling sendchoices', roomname)
+    fetch(`${backendurl}/quizhost/submitchoices/${roomname}`, {
+      method: 'get'
+      // body: JSON.stringify({ roomname: roomname })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        questiondata.current = data
+        console.log(questiondata, data)
+        changeLoadingQuestions(false)
+      })
+  }
+
   var { roomname } = useParams()
 
-  const [questionnumber, changequestionnumber] = useState(4)
+  const [questionnumber, changequestionnumber] = useState(1)
   // const [questiondata,setquestiondata]
   const questiondata = useRef(0)
   // const questiondata = useRef([
@@ -61,6 +75,13 @@ export default function SendQuestion(props) {
             }}
           >
             Send question number {questionnumber}
+          </button>
+          <button
+            onClick={() => {
+              sendchoicescall(props.RoomName)
+            }}
+          >
+            submit choices
           </button>
           {questiondata.current.map((q) => {
             if (q.QuestionNumber == questionnumber) {

@@ -1,4 +1,5 @@
 import { notify } from '../../Components/Snackbar'
+import { backendurl } from '../../../config'
 import {
   useEffect,
   useRef,
@@ -12,7 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 export default function PlayerQuestionCard(props) {
   // const questionstate = sampledata
-  // var { roomname } = useParams()
+  var { roomname } = useParams()
   const playername = props.playername
 
   socket.on('receivednextquestion', (arg) => {
@@ -24,13 +25,19 @@ export default function PlayerQuestionCard(props) {
   })
 
   socket.on('submitchoices', (arg) => {
+    console.log('submit choices', arg)
+    // return
     try {
       fetch(`${backendurl}/player/submitchoices`, {
         method: 'post',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(localStorage.getItem(playername))
+        body: JSON.stringify({
+          roomname: roomname,
+          playername: playername,
+          playersubmissions: localStorage.getItem(playername)
+        })
       }).then(async (response) => {
         if (response.status == 201) {
           notify('submitted choices')
@@ -42,7 +49,6 @@ export default function PlayerQuestionCard(props) {
       console.log('error found')
       console.log(error)
     }
-    console.log('submit questions', arg)
   })
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
@@ -95,10 +101,7 @@ const Choices = forwardRef(function Choices(props, ref) {
             key={count}
             onClick={(e) => {
               let prev = localStorage.getItem('player')
-              localStorage.setItem(
-                props.playername,
-                prev + e.target.innerText + ','
-              )
+              localStorage.setItem(props.playername, prev + e.target.id + ',')
               console.log(localStorage, e.target.innerText)
               // e.target.classList.add('submitted')
               changeChoiceState({
