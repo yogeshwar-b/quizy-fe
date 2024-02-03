@@ -16,40 +16,48 @@ export default function PlayerQuestionCard(props) {
   var { roomname } = useParams()
   const playername = props.playername
 
-  socket.on('receivednextquestion', (arg) => {
-    // changereceiveddata(arg + '\n' + receiveddata)
-    changeQuestionState(arg)
-    // changedisable(false)
-    choicesref.current.resetchoicestates()
-    console.log('received question', arg)
-  })
-
-  socket.on('submitchoices', (arg) => {
-    console.log('submit choices', arg)
-    // return
-    try {
-      fetch(`${backendurl}/player/submitchoices`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          roomname: roomname,
-          playername: playername,
-          playersubmissions: localStorage.getItem(playername)
+  useEffect(() => {
+    socket.on('submitchoices', (arg) => {
+      console.log('submit choices', arg, playername)
+      // return
+      try {
+        fetch(`${backendurl}/player/submitchoices`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            roomname: roomname,
+            playername: playername,
+            playersubmissions: localStorage.getItem(playername)
+          })
+        }).then(async (response) => {
+          if (response.status == 201) {
+            notify('submitted choices')
+          } else {
+            notify('Failed to submit')
+          }
         })
-      }).then(async (response) => {
-        if (response.status == 201) {
-          notify('submitted choices')
-        } else {
-          notify('Failed to submit')
-        }
-      })
-    } catch (error) {
-      console.log('error found')
-      console.log(error)
+      } catch (error) {
+        console.log('error found')
+        console.log(error)
+      }
+    })
+    socket.on('receivednextquestion', (arg) => {
+      // changereceiveddata(arg + '\n' + receiveddata)
+      changeQuestionState(arg)
+      // changedisable(false)
+      choicesref.current.resetchoicestates()
+      console.log('received question', arg)
+    })
+    return () => {
+      // Anything in here is fired on component unmount.
+      console.log('component unmounted')
+      socket.off('submitchoices')
+      socket.off('receivednextquestion')
     }
   })
+
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
     _id: 'xx',

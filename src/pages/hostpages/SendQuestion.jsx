@@ -10,13 +10,10 @@ export default function SendQuestion(props) {
     console.log('calling sendchoices', roomname)
     fetch(`${backendurl}/quizhost/submitchoices/${roomname}`, {
       method: 'get'
-      // body: JSON.stringify({ roomname: roomname })
     })
       .then((response) => response.json())
-      .then((data) => {
-        questiondata.current = data
-        console.log(questiondata, data)
-        changeLoadingQuestions(false)
+      .then((response) => {
+        console.log(response)
       })
   }
 
@@ -78,6 +75,7 @@ export default function SendQuestion(props) {
           </button>
           <button
             onClick={() => {
+              console.log('submit clickd')
               sendchoicescall(props.RoomName)
             }}
           >
