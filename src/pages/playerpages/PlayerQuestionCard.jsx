@@ -108,7 +108,7 @@ const Choices = forwardRef(function Choices(props, ref) {
             id={count++}
             key={count}
             onClick={(e) => {
-              let prev = localStorage.getItem('player')
+              let prev = localStorage.getItem(props.playername)
               localStorage.setItem(props.playername, prev + e.target.id + ',')
               console.log(localStorage, e.target.innerText)
               // e.target.classList.add('submitted')

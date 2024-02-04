@@ -17,22 +17,21 @@ export default function SendQuestion(props) {
       })
   }
 
+  function calculatescorecall(roomname) {
+    console.log('calling sendchoices', roomname)
+    fetch(`${backendurl}/quizhost/calculatescore/${roomname}`, {
+      method: 'get'
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response)
+      })
+  }
+
   var { roomname } = useParams()
 
   const [questionnumber, changequestionnumber] = useState(1)
-  // const [questiondata,setquestiondata]
   const questiondata = useRef(0)
-  // const questiondata = useRef([
-  //   {
-  //     _id: '65a8a2c1f5e20aa09adaddf4',
-  //     questionid: '802b53c4daaf50369cf0dc0e84f34fc3',
-  //     questiontxt: 'Waiting for First Quesition',
-  //     choices: ['choice 1', 'choice 2', 'choice 3'],
-  //     answer: 1,
-  //     QuestionNumber: 4,
-  //     __v: 0
-  //   }
-  // ])
   const [loadingQuestions, changeLoadingQuestions] = useState(true)
   useEffect(() => {
     console.log('get question number ' + questionnumber)
@@ -80,6 +79,14 @@ export default function SendQuestion(props) {
             }}
           >
             submit choices
+          </button>
+          <button
+            onClick={() => {
+              console.log('calculate scores clickd')
+              calculatescorecall(props.RoomName)
+            }}
+          >
+            calculate scores
           </button>
           {questiondata.current.map((q) => {
             if (q.QuestionNumber == questionnumber) {
