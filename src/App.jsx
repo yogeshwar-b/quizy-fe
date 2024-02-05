@@ -8,6 +8,7 @@ import '../src/styles/snackbar.css'
 import RoomPage from './pages/hostpages/RoomPage'
 import PlayerRoom from './pages/playerpages/PlayerRoom'
 import ViewEditQuestions from './pages/ViewQuestions'
+import Scoreboard from './pages/Scoreboard'
 
 function App() {
   useEffect(() => {
@@ -48,6 +49,10 @@ function App() {
         ></Route>
         <Route path='/room/' element={<Home />}></Route>
         <Route path='/room/:roomname' element={<PlayerRoom />}></Route>
+        <Route
+          path='/room/:roomname/scoreboard'
+          element={<Scoreboard />}
+        ></Route>
       </Routes>
     </div>
   )

@@ -1,4 +1,5 @@
 import { notify } from '../../Components/Snackbar'
+import { backendurl } from '../../../config'
 import {
   useEffect,
   useRef,
@@ -12,38 +13,51 @@ import { useParams, useNavigate } from 'react-router-dom'
 
 export default function PlayerQuestionCard(props) {
   // const questionstate = sampledata
-  // var { roomname } = useParams()
+  var { roomname } = useParams()
   const playername = props.playername
 
-  socket.on('receivednextquestion', (arg) => {
-    // changereceiveddata(arg + '\n' + receiveddata)
-    changeQuestionState(arg)
-    // changedisable(false)
-    choicesref.current.resetchoicestates()
-    console.log('received question', arg)
+  useEffect(() => {
+    socket.on('submitchoices', (arg) => {
+      console.log('submit choices', arg, playername)
+      // return
+      try {
+        fetch(`${backendurl}/player/submitchoices`, {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            roomname: roomname,
+            playername: playername,
+            playersubmissions: localStorage.getItem(playername)
+          })
+        }).then(async (response) => {
+          if (response.status == 201) {
+            notify('submitted choices')
+          } else {
+            notify('Failed to submit')
+          }
+        })
+      } catch (error) {
+        console.log('error found')
+        console.log(error)
+      }
+    })
+    socket.on('receivednextquestion', (arg) => {
+      // changereceiveddata(arg + '\n' + receiveddata)
+      changeQuestionState(arg)
+      // changedisable(false)
+      choicesref.current.resetchoicestates()
+      console.log('received question', arg)
+    })
+    return () => {
+      // Anything in here is fired on component unmount.
+      console.log('component unmounted')
+      socket.off('submitchoices')
+      socket.off('receivednextquestion')
+    }
   })
 
-  socket.on('submitchoices', (arg) => {
-    try {
-      fetch(`${backendurl}/player/submitchoices`, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(localStorage.getItem(playername))
-      }).then(async (response) => {
-        if (response.status == 201) {
-          notify('submitted choices')
-        } else {
-          notify('Failed to submit')
-        }
-      })
-    } catch (error) {
-      console.log('error found')
-      console.log(error)
-    }
-    console.log('submit questions', arg)
-  })
   // const [disable, changedisable] = useState(false)
   const [questionstate, changeQuestionState] = useState({
     _id: 'xx',
@@ -94,19 +108,16 @@ const Choices = forwardRef(function Choices(props, ref) {
             id={count++}
             key={count}
             onClick={(e) => {
-              let prev = localStorage.getItem('player')
-              localStorage.setItem(
-                props.playername,
-                prev + e.target.innerText + ','
-              )
+              let prev = localStorage.getItem(props.playername)
+                ? localStorage.getItem(props.playername)
+                : ''
+              localStorage.setItem(props.playername, prev + e.target.id + ',')
               console.log(localStorage, e.target.innerText)
-              // e.target.classList.add('submitted')
               changeChoiceState({
                 isSubmitted: true,
                 Selection: e.target.innerText
               })
               notify('choice submitted')
-              //send e.target.id to backend
             }}
           >
             {choice}

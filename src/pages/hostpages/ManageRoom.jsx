@@ -35,6 +35,14 @@ function AddRoom() {
       }
     })
   }
+
+  /**
+   *
+   * @param {object} req Request object
+   * @param {string} req.type type of request
+   * @param {string} req.roomname name of the room to manage
+   * @param {string} req.roomsecret secret of the room to manage
+   */
   function ManageRoom(req) {
     try {
       console.log('inside manage room', req)
