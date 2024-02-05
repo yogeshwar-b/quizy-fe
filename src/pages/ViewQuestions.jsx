@@ -2,7 +2,7 @@ import { useEffect, useReducer, useState } from 'react'
 import { backendurl } from '../../config'
 import { useParams } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
-import '../styles/viewquestions.css'
+import '../styles/viewquestions.scss'
 import { notify } from '../Components/Snackbar'
 import AddQuestion from './AddQuestion'
 

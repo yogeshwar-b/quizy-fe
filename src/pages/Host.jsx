@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { AddQuestion } from './AddQuestion'
 import GameRoom from './GameRoom'
 import ViewEditQuestions from './ViewQuestions'
-import '../styles/component.css'
-import '../styles/host.css'
+import '../styles/component.scss'
+import '../styles/host.scss'
 import ManageRoom from './hostpages/ManageRoom'
 
 function HostPage() {

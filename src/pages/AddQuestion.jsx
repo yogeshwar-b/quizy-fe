@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { backendurl } from '../../config'
-import '../styles/addquestion.css'
+import '../styles/addquestion.scss'
 import { PropTypes } from 'prop-types'
 import { notify } from '../Components/Snackbar'
 import { useParams } from 'react-router-dom'

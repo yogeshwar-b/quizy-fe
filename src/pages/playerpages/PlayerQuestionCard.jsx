@@ -7,7 +7,7 @@ import {
   forwardRef,
   useImperativeHandle
 } from 'react'
-import '../../styles/playerquestioncard.css'
+import '../../styles/playerquestioncard.scss'
 import socket from '../../socket/socket'
 import { useParams, useNavigate } from 'react-router-dom'
 

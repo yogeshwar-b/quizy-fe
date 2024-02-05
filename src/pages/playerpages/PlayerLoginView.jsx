@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import socket from '../../socket/socket'
 import { useNavigate } from 'react-router-dom'
 import { notify } from '../../Components/Snackbar'
-import '../../styles/playerloginview.css'
+import '../../styles/playerloginview.scss'
 import { generateSlug } from 'random-word-slugs'
 
 export default function PlayerLoginView(props) {

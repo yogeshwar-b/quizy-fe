@@ -1,5 +1,5 @@
-import '../styles/home.css'
-import '../styles/component.css'
+import '../styles/home.scss'
+import '../styles/component.scss'
 import ManageRoom from './hostpages/ManageRoom'
 
 function Home() {

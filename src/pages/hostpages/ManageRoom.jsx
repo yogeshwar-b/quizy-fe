@@ -4,7 +4,7 @@ import socket from '../../socket/socket'
 import { notify } from '../../Components/Snackbar'
 import { useNavigate } from 'react-router-dom'
 import PlayerLoginView from '../playerpages/PlayerLoginView'
-import '../../styles/manageroom.css'
+import '../../styles/manageroom.scss'
 
 export default function ManageRoom() {
   return <AddRoom />
