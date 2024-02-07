@@ -1,6 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/home'
-import { useEffect } from 'react'
 import '../src/styles/app.scss'
 import '../src/styles/snackbar.scss'
 import RoomPage from './pages/hostpages/RoomPage'
@@ -9,10 +8,6 @@ import ViewEditQuestions from './pages/hostpages/ViewQuestions'
 import Scoreboard from './pages/Scoreboard'
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  })
-
   return (
     <div>
       <div className='snackbar' id='snackbar'></div>

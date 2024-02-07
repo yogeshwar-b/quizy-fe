@@ -1,17 +1,36 @@
+@use 'colors' as *;
+@use 'transitions' as *;
+
 html {
   font-family: system-ui;
-  background: radial-gradient(
-    circle,
-    rgba(237, 236, 236, 1) 27%,
-    rgba(208, 208, 208, 1) 100%
-  );
+  background-image: $wind-gradient;
+  color: black;
+  height: 100%;
+  transition: $cubic-bezier-500;
+  opacity: 1;
+}
+
+html::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: $deep-gradient;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: $cubic-bezier-500;
+}
+// html * {
+//   transition: 2s;
+// }
+html.dark::before {
+  opacity: 1;
 }
 
 .dark {
-  background: radial-gradient(
-    circle,
-    rgba(55, 55, 55, 1) 21%,
-    rgba(27, 27, 27, 1) 100%
-  );
-  color: white;
+  color: $font-color-dark;
 }

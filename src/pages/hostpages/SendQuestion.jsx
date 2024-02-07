@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import socket from '../../socket/socket'
 import { useParams } from 'react-router-dom'
 import { backendurl } from '../../../config'
 import { notify } from '../../Components/Snackbar'

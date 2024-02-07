@@ -3,6 +3,7 @@ import socket from '../../socket/socket'
 import { useNavigate } from 'react-router-dom'
 import { notify } from '../../Components/Snackbar'
 import '../../styles/playerloginview.scss'
+import '../../styles/component.scss'
 import { generateSlug } from 'random-word-slugs'
 
 export default function PlayerLoginView(props) {
@@ -36,6 +37,7 @@ export default function PlayerLoginView(props) {
         </div>
         <input type='text' ref={playerroomname} />
         <button
+          className='btn-round'
           onClick={() => {
             RequestToJoinRoom({
               state: {
