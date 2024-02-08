@@ -1,11 +1,12 @@
 import PlayerLoginView from '../pages/playerpages/PlayerLoginView'
 import HostLoginView from '../pages/hostpages/HostLoginView'
+import './../styles/defaultview.scss'
 
 export default function DefaultView() {
   return (
-    <div>
+    <div className='flex-default'>
       <PlayerLoginView />
-      <br />
+      <div />
       <HostLoginView />
     </div>
   )

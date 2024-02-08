@@ -5,6 +5,7 @@ import { notify } from '../../Components/Snackbar'
 import '../../styles/playerloginview.scss'
 import '../../styles/component.scss'
 import { generateSlug } from 'random-word-slugs'
+import '../../styles/defaultview.scss'
 
 export default function PlayerLoginView(props) {
   const Navigate = useNavigate()
@@ -18,7 +19,7 @@ export default function PlayerLoginView(props) {
     Navigate(`./room/${playerroomname.current.value}`, req)
   }
   return (
-    <>
+    <div className='player-display'>
       <h2>Player View</h2>
       <div className='flex-col'>
         <div>
@@ -53,6 +54,6 @@ export default function PlayerLoginView(props) {
           Join Room
         </button>
       </div>
-    </>
+    </div>
   )
 }

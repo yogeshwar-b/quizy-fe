@@ -4,6 +4,7 @@ import { generateSlug } from 'random-word-slugs'
 import socket from '../../socket/socket'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/hostloginview.scss'
+import '../../styles/defaultview.scss'
 
 function HostLoginView() {
   const existingroomname = useRef(0)
@@ -55,7 +56,7 @@ function HostLoginView() {
   }
 
   return (
-    <div>
+    <div className='host-display'>
       <h2>Host View</h2>
       <div>
         <div className='flex-col'>
