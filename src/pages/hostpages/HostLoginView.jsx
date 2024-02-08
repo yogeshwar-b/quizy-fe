@@ -3,7 +3,7 @@ import { notify } from '../../Components/Snackbar'
 import { generateSlug } from 'random-word-slugs'
 import socket from '../../socket/socket'
 import { useNavigate } from 'react-router-dom'
-import '../../styles/manageroom.scss'
+import '../../styles/hostloginview.scss'
 
 function HostLoginView() {
   const existingroomname = useRef(0)
