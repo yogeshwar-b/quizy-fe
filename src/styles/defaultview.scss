@@ -1,29 +1,29 @@
-$mobile-width: 600px;
-
-.flex-default {
+.disp-1 {
   display: flex;
+  justify-content: space-evenly;
+  gap: 0.5rem;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.host-display {
-  padding: 1%;
-  height: 300px;
-  background-color: darkblue;
-  @media screen and (max-width: $mobile-width) {
-    width: 100%;
-  }
-  width: 48%;
+.divider {
+  border: 2px;
+  border-style: solid;
+  border-color: white;
+  border-radius: 50%;
 }
 
-.player-display {
-  padding: 1%;
+.player-flex {
+  /* width: 45%; */
+  flex: 1;
+}
+.host-flex {
+  /* width: 45%; */
+  flex: 1;
+}
 
-  height: 300px;
-  width: 48%;
-
-  background-color: darkmagenta;
-  @media screen and (max-width: $mobile-width) {
-    width: 100%;
+@media screen and (max-width: 600px) {
+  .disp-1 {
+    flex-direction: column;
   }
 }

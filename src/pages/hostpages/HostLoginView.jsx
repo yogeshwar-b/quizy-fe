@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import '../../styles/hostloginview.scss'
 import '../../styles/defaultview.scss'
 
-function HostLoginView() {
+function HostLoginView({ className }) {
   const existingroomname = useRef(0)
   const existingroomsecret = useRef(0)
   const newroomname = useRef(0)
@@ -56,70 +56,72 @@ function HostLoginView() {
   }
 
   return (
-    <div className='host-display'>
-      <h2>Host View</h2>
-      <div>
-        <div className='flex-col'>
-          Connect to Existing Room
-          <input
-            type='text'
-            id='roomname'
-            ref={existingroomname}
-            placeholder='enter name of existing room'
-          />
-          <input
-            type='text'
-            id='roomsecret'
-            ref={existingroomsecret}
-            placeholder='enter name of existing room'
-          />
-          <button
-            onClick={() => {
-              console.log('manageroom called')
-
-              existingroomname.current.value && existingroomsecret.current.value
-                ? ManageRoom({
-                    type: 'manageroom',
-                    roomname: existingroomname.current.value,
-                    roomsecret: existingroomsecret.current.value
-                  })
-                : notify('Please enter room details')
-            }}
-          >
-            Connect
-          </button>
-        </div>
-        <br />
-        <div className='flex-col'>
-          Create New Room
-          <input
-            type='text'
-            id='newroomname'
-            ref={newroomname}
-            placeholder={generateSlug()}
-          />
-          <input
-            type='text'
-            id='newroomsecret'
-            ref={newroomsecret}
-            placeholder={generateSlug(1)}
-          />
-          <button
-            onClick={() => {
-              CreateRoom({
-                type: 'createroom',
-                roomname: newroomname.current.value
-                  ? newroomname.current.value
-                  : newroomname.current.placeholder,
-                roomsecret: newroomsecret.current.value
-                  ? newroomsecret.current.value
-                  : newroomsecret.current.placeholder
-              })
-            }}
-          >
-            Create
-          </button>
+    <div className={className}>
+      <div className='host-grid'>
+        <h2>Host View</h2>
+        <div>
+          <div className='flex-col'>
+            Connect to Existing Room
+            <input
+              type='text'
+              id='roomname'
+              ref={existingroomname}
+              placeholder='enter name of existing room'
+            />
+            <input
+              type='text'
+              id='roomsecret'
+              ref={existingroomsecret}
+              placeholder='enter name of existing room'
+            />
+            <button
+              onClick={() => {
+                console.log('manageroom called')
+                existingroomname.current.value &&
+                existingroomsecret.current.value
+                  ? ManageRoom({
+                      type: 'manageroom',
+                      roomname: existingroomname.current.value,
+                      roomsecret: existingroomsecret.current.value
+                    })
+                  : notify('Please enter room details')
+              }}
+            >
+              Connect
+            </button>
+          </div>
           <br />
+          <div className='flex-col'>
+            Create New Room
+            <input
+              type='text'
+              id='newroomname'
+              ref={newroomname}
+              placeholder={generateSlug()}
+            />
+            <input
+              type='text'
+              id='newroomsecret'
+              ref={newroomsecret}
+              placeholder={generateSlug(1)}
+            />
+            <button
+              onClick={() => {
+                CreateRoom({
+                  type: 'createroom',
+                  roomname: newroomname.current.value
+                    ? newroomname.current.value
+                    : newroomname.current.placeholder,
+                  roomsecret: newroomsecret.current.value
+                    ? newroomsecret.current.value
+                    : newroomsecret.current.placeholder
+                })
+              }}
+            >
+              Create
+            </button>
+            <br />
+          </div>
         </div>
       </div>
     </div>

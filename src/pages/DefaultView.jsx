@@ -4,10 +4,10 @@ import './../styles/defaultview.scss'
 
 export default function DefaultView() {
   return (
-    <div className='flex-default'>
-      <PlayerLoginView />
-      <div />
-      <HostLoginView />
+    <div className='disp-1'>
+      <PlayerLoginView className='player-flex' />
+      <div className='divider' />
+      <HostLoginView className='host-flex' />
     </div>
   )
 }
