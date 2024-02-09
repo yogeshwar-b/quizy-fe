@@ -1,20 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/home'
-import PlayerPage from './pages/Player'
-import HostPage from './pages/Host'
-import { useEffect } from 'react'
-import '../src/styles/app.css'
-import '../src/styles/snackbar.css'
+import '../src/styles/app.scss'
+import '../src/styles/snackbar.scss'
 import RoomPage from './pages/hostpages/RoomPage'
 import PlayerRoom from './pages/playerpages/PlayerRoom'
-import ViewEditQuestions from './pages/ViewQuestions'
+import ViewEditQuestions from './pages/hostpages/ViewQuestions'
 import Scoreboard from './pages/Scoreboard'
 
 function App() {
-  useEffect(() => {
-    document.documentElement.classList.add('dark')
-  })
-
   return (
     <div>
       <div className='snackbar' id='snackbar'></div>
@@ -40,8 +33,6 @@ function App() {
       </div>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/host/*' element={<HostPage />} />
-        <Route path='/player' element={<PlayerPage />} />
         <Route path='/manageroom/:roomname' element={<RoomPage />}></Route>
         <Route
           path='/manageroom/:roomname/viewquestions'

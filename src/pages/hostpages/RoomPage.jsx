@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import ViewEditQuestions from '../ViewQuestions'
-import AddQuestion from '../AddQuestion'
+// import ViewEditQuestions from '../ViewQuestions'
+import AddQuestion from '../hostpages/AddQuestion'
 import SendQuestion from './SendQuestion'
 
 /**

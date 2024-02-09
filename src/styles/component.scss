@@ -1,6 +1,9 @@
+@use 'transitions' as *;
+
 .btn-round {
   border-radius: 0.5rem;
   background-color: rgb(255, 255, 255);
+  transition: $cubic-bezier-500;
   /* box-shadow: 0.05rem 0.05rem 0.05rem; */
 }
 

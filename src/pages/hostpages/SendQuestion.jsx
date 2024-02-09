@@ -1,9 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
-import socket from '../../socket/socket'
 import { useParams } from 'react-router-dom'
 import { backendurl } from '../../../config'
 import { notify } from '../../Components/Snackbar'
-import '../../styles/viewquestions.css'
+import '../../styles/viewquestions.scss'
 
 export default function SendQuestion(props) {
   function sendchoicescall(roomname) {

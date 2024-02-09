@@ -1,0 +1,11 @@
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  // width: 60%;
+}
+
+.player-grid {
+  display: grid;
+  place-items: center;
+}

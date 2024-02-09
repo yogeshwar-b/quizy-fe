@@ -1,11 +1,11 @@
-import '../styles/home.css'
-import '../styles/component.css'
-import ManageRoom from './hostpages/ManageRoom'
+import '../styles/home.scss'
+import '../styles/component.scss'
+import DefaultView from './DefaultView'
 
 function Home() {
   return (
     <div>
-      <ManageRoom />
+      <DefaultView />
     </div>
   )
 }

@@ -1,0 +1,36 @@
+@use 'colors' as *;
+@use 'transitions' as *;
+
+html {
+  font-family: system-ui;
+  background-image: $wind-gradient;
+  color: black;
+  height: 100%;
+  transition: $cubic-bezier-500;
+  opacity: 1;
+}
+
+html::before {
+  position: absolute;
+  content: '';
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: $deep-gradient;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: $cubic-bezier-500;
+}
+// html * {
+//   transition: 2s;
+// }
+html.dark::before {
+  opacity: 1;
+}
+
+.dark {
+  color: $font-color-dark;
+}

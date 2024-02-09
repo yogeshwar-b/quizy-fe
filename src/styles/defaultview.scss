@@ -1,0 +1,29 @@
+.disp-1 {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.divider {
+  border: 2px;
+  border-style: solid;
+  border-color: white;
+  border-radius: 50%;
+}
+
+.player-flex {
+  /* width: 45%; */
+  flex: 1;
+}
+.host-flex {
+  /* width: 45%; */
+  flex: 1;
+}
+
+@media screen and (max-width: 600px) {
+  .disp-1 {
+    flex-direction: column;
+  }
+}
