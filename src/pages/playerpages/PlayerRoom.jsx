@@ -4,6 +4,7 @@ import PlayerQuestionCard from './PlayerQuestionCard'
 import { useEffect } from 'react'
 import { notify } from '../../Components/Snackbar'
 import socket from '../../socket/socket'
+import '../../styles/playerroom.scss'
 
 export default function PlayerRoom() {
   // let { roomname } = useParams()
@@ -49,7 +50,7 @@ export default function PlayerRoom() {
     })
   }, [])
   return (
-    <div>
+    <div className='player-room'>
       <div>
         This is Player Room - {roomname} You joined as {playername}
       </div>
