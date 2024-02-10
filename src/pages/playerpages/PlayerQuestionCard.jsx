@@ -9,7 +9,7 @@ import {
 } from 'react'
 import '../../styles/playerquestioncard.scss'
 import socket from '../../socket/socket'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export default function PlayerQuestionCard(props) {
   // const questionstate = sampledata
@@ -70,9 +70,9 @@ export default function PlayerQuestionCard(props) {
 
   const choicesref = useRef(null)
   return (
-    <div>
+    <div className='question-card'>
       {/* <div> Player question card below</div> */}
-      <div>{questionstate.questiontxt}</div>
+      <div className='question-text'>{questionstate.questiontxt}</div>
       <Choices
         choicedata={questionstate.choices}
         playername={playername}

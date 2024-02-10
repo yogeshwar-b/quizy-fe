@@ -5,6 +5,7 @@ import socket from '../../socket/socket'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/hostloginview.scss'
 import '../../styles/defaultview.scss'
+import '../../styles/component.scss'
 
 function HostLoginView({ className }) {
   const existingroomname = useRef(0)
@@ -64,17 +65,20 @@ function HostLoginView({ className }) {
             Connect to Existing Room
             <input
               type='text'
+              className='soft-input'
               id='roomname'
               ref={existingroomname}
-              placeholder='enter name of existing room'
+              placeholder='Room Name'
             />
             <input
               type='text'
+              className='soft-input'
               id='roomsecret'
               ref={existingroomsecret}
-              placeholder='enter name of existing room'
+              placeholder='Room Secret'
             />
             <button
+              className='soft-button'
               onClick={() => {
                 console.log('manageroom called')
                 existingroomname.current.value &&
@@ -95,17 +99,20 @@ function HostLoginView({ className }) {
             Create New Room
             <input
               type='text'
+              className='soft-input'
               id='newroomname'
               ref={newroomname}
               placeholder={generateSlug()}
             />
             <input
               type='text'
+              className='soft-input'
               id='newroomsecret'
               ref={newroomsecret}
               placeholder={generateSlug(1)}
             />
             <button
+              className='soft-button'
               onClick={() => {
                 CreateRoom({
                   type: 'createroom',

@@ -21,44 +21,46 @@ export default function PlayerLoginView({ className }) {
   return (
     <div className={className}>
       <div className='player-grid'>
-        <h2>Player View</h2>
-        <div className='flex-col'>
-          <div>
-            Join as
-            <input
-              type='text'
-              ref={playername}
-              placeholder={generateSlug(2, {
-                partsOfSpeech: ['adjective', 'noun'],
-                categories: {
-                  adjective: ['color', 'appearance'],
-                  noun: ['animals']
-                }
-              })}
-            />
-          </div>
-          <input
-            type='text'
-            placeholder='Enter Room Name'
-            ref={playerroomname}
-          />
-          <button
-            className='btn-round'
-            onClick={() => {
-              RequestToJoinRoom({
-                state: {
-                  type: 'joinroom',
-                  roomname: playerroomname.current.value,
-                  playername: playername.current.value
-                    ? playername.current.value
-                    : playername.current.placeholder
-                }
-              })
-            }}
-          >
-            Join Room
-          </button>
-        </div>
+        <h2 className='grid-span-2'>Player View</h2>
+        <label htmlFor='playername'>Join as</label>
+        <input
+          id='playername'
+          type='text'
+          className='soft-input'
+          ref={playername}
+          placeholder={generateSlug(2, {
+            partsOfSpeech: ['adjective', 'noun'],
+            categories: {
+              adjective: ['color', 'appearance'],
+              noun: ['animals']
+            }
+          })}
+        />
+        <label htmlFor='playerrom'>Roomname</label>
+        <input
+          id='playerroom'
+          type='text'
+          className='soft-input'
+          placeholder='Enter Room Name'
+          ref={playerroomname}
+        />
+
+        <button
+          className='soft-button grid-span-2'
+          onClick={() => {
+            RequestToJoinRoom({
+              state: {
+                type: 'joinroom',
+                roomname: playerroomname.current.value,
+                playername: playername.current.value
+                  ? playername.current.value
+                  : playername.current.placeholder
+              }
+            })
+          }}
+        >
+          Join Room
+        </button>
       </div>
     </div>
   )

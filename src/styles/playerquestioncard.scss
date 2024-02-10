@@ -1,7 +1,6 @@
 .choices-list {
   display: flex;
   flex-direction: column;
-  padding: 2%;
   gap: 0.5rem;
 }
 
@@ -9,11 +8,18 @@
   /* background: none; */
   color: rgb(28, 28, 28);
   background-color: rgb(176, 176, 176);
+  font-weight: 600;
+  font-size: 2rem;
+  text-align: left;
   border: none;
   border-radius: 0.2rem;
   padding: 0.5rem;
 }
 
+.question-text {
+  font-weight: 500;
+  font-size: 2rem;
+}
 .dark .choice-button {
   color: black;
   background-color: white;
@@ -29,3 +35,10 @@
 /* .choice-button:disabled {
   background: none;
 } */
+
+.question-card {
+  border-radius: 1rem;
+  padding: 1rem;
+  // lighttheme
+  box-shadow: 1px 1px 20px 0px black;
+}
