@@ -7,6 +7,7 @@ import PlayerRoom from './pages/playerpages/PlayerRoom'
 import ViewEditQuestions from './pages/hostpages/ViewQuestions'
 import Scoreboard from './pages/Scoreboard'
 import './styles/index.scss'
+import ThemeButton from './Components/Themebutton'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <div className='snackbar' id='snackbar'></div>
       <div className='nav-row'>
         <div> QUIZY </div>
+        <ThemeButton></ThemeButton>
         <label
           htmlFor='DarkModeCheckBox'
           style={{ marginLeft: 'auto', marginRight: 0 }}

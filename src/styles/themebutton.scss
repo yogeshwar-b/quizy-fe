@@ -1,0 +1,60 @@
+.theme-button {
+  background: transparent;
+  aspect-ratio: 1;
+  background: white;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 100%;
+  box-shadow: 2px 2px 0px 0px black;
+  transition: 0.2s;
+  display: grid;
+  place-items: center;
+}
+
+.theme-button:active {
+  translate: 2px 2px;
+  box-shadow: none;
+}
+
+.grid-stack {
+  display: grid;
+  border-style: solid;
+  padding: 4px;
+  border-width: 2px;
+  border-radius: 100%;
+  box-shadow: 3px 3px 0px 0px black;
+  transition: 0.3s;
+  overflow: hidden;
+}
+.grid-stack-translate {
+  translate: 3px 3px;
+  box-shadow: none;
+}
+
+.grid-item {
+  grid-area: 1/1;
+}
+
+.checkbox-button {
+  position: absolute;
+  background: transparent;
+  visibility: hidden;
+}
+img {
+  transition: 200ms;
+}
+.lightmode {
+  translate: -30px;
+}
+
+.lightmode-enable {
+  translate: 0px;
+}
+
+.darkmode {
+  translate: +30px;
+}
+
+.darkmode-enable {
+  translate: 0px;
+}
