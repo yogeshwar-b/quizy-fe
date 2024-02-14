@@ -1,14 +1,64 @@
 @use 'transitions' as *;
+@use 'colors' as *;
 
-.btn-round {
-  border-radius: 0.5rem;
-  background-color: rgb(255, 255, 255);
-  transition: $cubic-bezier-500;
-  /* box-shadow: 0.05rem 0.05rem 0.05rem; */
+.dark {
+  .soft-input {
+    border-color: $input-accent-dark;
+    color: $font-color-dark;
+  }
+  .soft-input::placeholder {
+    color: rgb(92, 179, 245);
+    opacity: 50%;
+  }
+  .soft-input:focus {
+    box-shadow: 0px 2px 2px 0px $input-accent-dark;
+    background-color: $input-focus-bg-dark;
+    /* margin: -5px; */
+  }
+  .soft-button:active {
+    color: $font-color-dark;
+  }
 }
 
-.dark .btn-round {
-  color: rgb(211, 211, 211);
-  background-color: rgb(109, 109, 109);
-  /* box-shadow: 0.05rem 0.05rem 0.05rem rgb(11, 195, 195); */
+.soft-input:focus {
+  box-shadow: 0px 2px 2px 0px $input-accent-light;
+  background-color: $input-focus-bg-light;
+  transition: $transition-500;
+}
+.soft-input {
+  text-align: center;
+  color: $font-color-light;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  border-color: $input-accent-light;
+  border-radius: 0.6rem;
+  background: transparent;
+  opacity: 1;
+  outline: none;
+  transition: $transition-500;
+}
+.soft-input::placeholder {
+  transition: $transition-500;
+}
+.soft-button {
+  width: 100%;
+  max-width: 200px;
+  font-size: 1rem;
+  padding: 0.2em;
+  border-radius: 0.6rem;
+  background: transparent;
+  color: $input-accent-light;
+  border: 0.1rem;
+  border-style: solid;
+  box-shadow: 0px 0.3rem 2px 0px $input-accent-light;
+  transition: 0.1s;
+}
+
+.soft-button:active {
+  translate: 0px 0.3rem;
+  box-shadow: none;
+  color: $font-color-light;
 }

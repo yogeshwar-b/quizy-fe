@@ -1,11 +1,36 @@
-.flex-col {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  // width: 60%;
-}
+// .flex-col {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0.2rem;
+//   // width: 60%;
+// }
 
 .player-grid {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   place-items: center;
+  gap: 0.7rem;
+  padding: 3rem;
+}
+
+.grid-span-2 {
+  grid-column: span 2;
+}
+
+label {
+  width: 100%;
+  text-align: right;
+}
+
+@media screen and (max-width: 660px) {
+  .player-grid {
+    grid-template-columns: 1fr;
+  }
+  .grid-span-2 {
+    grid-column: span 1;
+  }
+  label {
+    width: 100%;
+    text-align: center;
+  }
 }

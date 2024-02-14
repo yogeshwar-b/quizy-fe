@@ -5,9 +5,14 @@ html {
   font-family: system-ui;
   background-image: $wind-gradient;
   color: black;
-  height: 100%;
   transition: $cubic-bezier-500;
   opacity: 1;
+}
+html,
+body,
+#root,
+#App {
+  height: 99vh;
 }
 
 html::before {
