@@ -1,10 +1,12 @@
 .choices-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   flex: 2;
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  // transition: all 1s;
 }
 
 .choice-button {
@@ -17,9 +19,8 @@
   border: none;
   border-radius: 1rem;
   padding: 0.5rem;
-  flex: 1;
-  width: 100%;
-  max-width: 1000px;
+  width: 49%;
+  height: 4em;
 }
 
 .question-text {
@@ -55,4 +56,14 @@
   // lighttheme
   // box-shadow: 1px 1px 3px 0px black;
   padding-bottom: 3rem;
+}
+
+@media screen and (max-width: 950px) {
+  .choices-list {
+    flex-direction: column;
+  }
+  .choice-button {
+    flex: 1;
+    width: 100%;
+  }
 }
